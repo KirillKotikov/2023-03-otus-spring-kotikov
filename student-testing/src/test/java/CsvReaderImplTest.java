@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CsvReaderImplTest {
 
-    private static final QuestionDao QUESTION_DAO = new QuestionDao();
+    private static final QuestionDao QUESTION_DAO = new QuestionDao("questions.csv");
 
     @Test
     public void testGetQuestions() {
-        List<Question> questions = QUESTION_DAO.getQuestions("questions.csv");
+        List<Question> questions = QUESTION_DAO.getQuestions();
         Map<String, Map<List<String>, String>> mapQuestions = new HashMap<>();
         for (Question question : questions) {
             Map<List<String>, String> map = new HashMap<>();

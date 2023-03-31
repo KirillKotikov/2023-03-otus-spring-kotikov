@@ -7,31 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentTestingService {
-    private final String csvTestFile;
-
     private final IOService iOService;
 
     private final ResultPrinter resultPrinter;
 
     private final QuestionDao questionDao;
 
-    private final QuestionPrinter questionPrinter;
-
-    public StudentTestingService(String csvTestFile, IOService iOService, ResultPrinter resultPrinter,
-                                 QuestionDao questionDao, QuestionPrinter questionPrinter) {
-        this.csvTestFile = csvTestFile;
+    public StudentTestingService(IOService iOService, ResultPrinter resultPrinter,
+                                 QuestionDao questionDao) {
         this.iOService = iOService;
         this.resultPrinter = resultPrinter;
         this.questionDao = questionDao;
-        this.questionPrinter = questionPrinter;
     }
 
     public void startTesting() {
 
-        List<Question> questions = questionDao.getQuestions(csvTestFile);
+        List<Question> questions = questionDao.getQuestions();
         List<String> studentAndCorrectAnswers = new ArrayList<>();
         for (Question question : questions) {
-            questionPrinter.printQuestion(question.getQuestion(), question.getAnswers());
+            iOService.printLine(question.getQuestion() + "\n");
+            for (String answer : question.getAnswers()) {
+                iOService.printLine(answer + "\n");
+            }
             studentAndCorrectAnswers.add(iOService.readLine());
             studentAndCorrectAnswers.add(question.getCorrectAnswer());
         }

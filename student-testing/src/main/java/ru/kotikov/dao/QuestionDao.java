@@ -11,9 +11,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public class QuestionDao {
-    public List<Question> getQuestions(String resourceName) {
+
+    private final String csvTestFile;
+
+    public QuestionDao(String csvTestFile) {
+        this.csvTestFile = csvTestFile;
+    }
+
+    public List<Question> getQuestions() {
         List<Question> questions = new ArrayList<>();
-        try (InputStream inputStream = QuestionDao.class.getClassLoader().getResourceAsStream(resourceName)) {
+        try (InputStream inputStream = QuestionDao.class.getClassLoader().getResourceAsStream(csvTestFile)) {
             assert inputStream != null;
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                 while (reader.ready()) {

@@ -11,7 +11,12 @@ public class AnswerService implements IOService {
 
     @Override
     public String readLine() {
-        IOService.print("Enter an answer: ");
+        printLine("Enter an answer: ");
         return scanner.next();
+    }
+
+    @Override
+    public void printLine(String line) {
+        System.out.print(line);
     }
 }
