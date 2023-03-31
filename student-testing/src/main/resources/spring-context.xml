@@ -4,9 +4,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="csvReader" class="ru.kotikov.services.CsvReaderImpl"/>
-    <bean id="questionPrinter" class="ru.kotikov.services.QuestionPrinterImpl"/>
-    <bean id="answerReader" class="ru.kotikov.services.AnswerReaderImpl"/>
+    <bean id="studentTestingService" class="ru.kotikov.services.StudentTestingService">
+        <constructor-arg index="0" value="questions.csv"/>
+        <constructor-arg index="1" ref="iOService"/>
+        <constructor-arg index="2" ref="resultPrinter"/>
+        <constructor-arg index="3" ref="questionDao"/>
+        <constructor-arg index="4" ref="questionPrinter"/>
+    </bean>
+    <bean id="iOService" class="ru.kotikov.services.AnswerService"/>
+    <bean id="questionDao" class="ru.kotikov.dao.QuestionDao"/>
     <bean id="resultPrinter" class="ru.kotikov.services.ResultPrinterImpl"/>
+    <bean id="questionPrinter" class="ru.kotikov.services.QuestionPrinterImpl"/>
 
 </beans>
