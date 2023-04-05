@@ -1,5 +1,9 @@
 package ru.kotikov.dao;
 
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import ru.kotikov.models.Question;
 
 import java.io.BufferedReader;
@@ -10,12 +14,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Component
+@PropertySource("/application.properties")
 public class QuestionDao {
 
     private final String csvTestFile;
 
-    public QuestionDao(String csvTestFile) {
+    private @Getter
+    final byte minCorrectAnswers;
+
+    public QuestionDao(@Value("${questionDao.csvTestFile}") String csvTestFile,
+                       @Value("${questionDao.minCorrectAnswers}") byte minCorrectAnswers) {
         this.csvTestFile = csvTestFile;
+        this.minCorrectAnswers = minCorrectAnswers;
     }
 
     public List<Question> getQuestions() {

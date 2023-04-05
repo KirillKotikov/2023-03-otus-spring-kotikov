@@ -1,5 +1,6 @@
+package ru.kotikov.dao;
+
 import org.junit.jupiter.api.Test;
-import ru.kotikov.dao.QuestionDao;
 import ru.kotikov.models.Question;
 
 import java.util.Arrays;
@@ -11,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class CsvReaderImplTest {
+public class QuestionDaoTest {
 
-    private static final QuestionDao QUESTION_DAO = new QuestionDao("questions.csv");
+    private static final QuestionDao QUESTION_DAO = new QuestionDao("questions.csv", (byte) 3);
 
     @Test
     public void testGetQuestions() {

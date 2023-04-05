@@ -1,7 +1,10 @@
 package ru.kotikov.services;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Scanner;
 
+@Service
 public class AnswerService implements IOService {
     private final Scanner scanner;
 
@@ -11,7 +14,6 @@ public class AnswerService implements IOService {
 
     @Override
     public String readLine() {
-        printLine("Enter an answer: ");
         return scanner.next();
     }
 
