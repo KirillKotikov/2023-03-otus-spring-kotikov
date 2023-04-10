@@ -1,0 +1,5 @@
+What is the latest version of Java?;1) 17,2) 23,3) 99,4) 20;4
+What is the maximum complexity of a boolean expression allowed?;1) 2,2) 4,3) 64,4) 8;2
+What is the style of writing a class name in Java?;1) CamelCase,2) lowerCamelCase,3) snake_case,4) dog@case;1
+Select an example of a valid constant in Java.;1) initial Const const,2) String CONST,3) static final String const,4) static final String CONST;4
+If the value of the field does not change during the execution of the program, then it should be?;1) public,2) static,3) final,4) Destroyed! :);3

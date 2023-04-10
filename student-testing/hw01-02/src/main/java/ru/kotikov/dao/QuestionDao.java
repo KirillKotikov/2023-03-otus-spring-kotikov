@@ -2,7 +2,6 @@ package ru.kotikov.dao;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import ru.kotikov.models.Question;
 
@@ -15,16 +14,15 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-@PropertySource("/application.properties")
+@Getter
 public class QuestionDao {
 
     private final String csvTestFile;
 
-    private @Getter
-    final byte minCorrectAnswers;
+    private final int minCorrectAnswers;
 
     public QuestionDao(@Value("${questionDao.csvTestFile}") String csvTestFile,
-                       @Value("${questionDao.minCorrectAnswers}") byte minCorrectAnswers) {
+                       @Value("${questionDao.minCorrectAnswers}") int minCorrectAnswers) {
         this.csvTestFile = csvTestFile;
         this.minCorrectAnswers = minCorrectAnswers;
     }
