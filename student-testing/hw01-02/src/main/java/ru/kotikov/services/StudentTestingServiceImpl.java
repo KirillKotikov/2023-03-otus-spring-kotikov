@@ -31,18 +31,18 @@ public class StudentTestingServiceImpl implements StudentTestingService {
 
 
     private Student getStudent() {
-        String studentFirstName = ioServiceStreams.readStringWithPrompt("Enter your first name: ");
-        String studentLastName = ioServiceStreams.readStringWithPrompt("Enter your last name: ");
+        String studentFirstName = ioServiceStreams.readLineWithPrompt("Enter your first name: ");
+        String studentLastName = ioServiceStreams.readLineWithPrompt("Enter your last name: ");
         return new Student(studentFirstName, studentLastName);
     }
 
     private void getStudentAnswers(List<Question> questions, List<String> studentAndCorrectAnswers) {
         for (Question question : questions) {
-            ioServiceStreams.outputString(question.getQuestion());
+            ioServiceStreams.printLine(question.getQuestion());
             for (String answer : question.getAnswers()) {
-                ioServiceStreams.outputString(answer);
+                ioServiceStreams.printLine(answer);
             }
-            studentAndCorrectAnswers.add(ioServiceStreams.readStringWithPrompt("Enter an answer: "));
+            studentAndCorrectAnswers.add(ioServiceStreams.readLineWithPrompt("Enter an answer: "));
             studentAndCorrectAnswers.add(question.getCorrectAnswer());
         }
     }
@@ -55,19 +55,19 @@ public class StudentTestingServiceImpl implements StudentTestingService {
             }
         }
         if (correctAnswersCount >= questionDao.getMinCorrectAnswers()) {
-            ioServiceStreams.outputString("Test passed, count of correct answers = " + correctAnswersCount + ".");
+            ioServiceStreams.printLine("Test passed, count of correct answers = " + correctAnswersCount + ".");
         } else {
-            ioServiceStreams.outputString("Test failed, count of correct answers = " + correctAnswersCount + ". " +
+            ioServiceStreams.printLine("Test failed, count of correct answers = " + correctAnswersCount + ". " +
                     "Min count of correct answers = " + questionDao.getMinCorrectAnswers() + ".");
         }
     }
 
     private void printResult(List<String> result, Student student) {
-        ioServiceStreams.outputString(String.format("Test results of student %s %s:",
+        ioServiceStreams.printLine(String.format("Test results of student %s %s:",
                 student.getFirstName(), student.getLastName()));
         int answerCount = 1;
         for (int i = 0; i < result.size(); i += 2) {
-            ioServiceStreams.outputString("Question №" + answerCount + ": your answer = "
+            ioServiceStreams.printLine("Question №" + answerCount + ": your answer = "
                     + result.get(i) + ", correct = " + result.get(i + 1));
             answerCount++;
         }

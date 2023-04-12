@@ -24,13 +24,13 @@ public class IOServiceStreams implements IOService {
     }
 
     @Override
-    public void outputString(String s) {
+    public void printLine(String s) {
         output.println(s);
     }
 
     @Override
-    public String readStringWithPrompt(String prompt) {
-        outputString(prompt);
+    public String readLineWithPrompt(String prompt) {
+        printLine(prompt);
         return input.nextLine();
     }
 }

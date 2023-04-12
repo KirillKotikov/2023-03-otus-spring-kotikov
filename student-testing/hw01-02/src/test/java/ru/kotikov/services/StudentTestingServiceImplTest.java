@@ -1,7 +1,12 @@
 package ru.kotikov.services;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.kotikov.Main;
+import ru.kotikov.TestConfig;
 import ru.kotikov.dao.QuestionDao;
 
 import java.io.ByteArrayInputStream;
@@ -10,11 +15,12 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {Main.class, TestConfig.class})
 public class StudentTestingServiceImplTest {
 
-    @Mock
-    private QuestionDao questionDao = new QuestionDao("questions.csv", 3);
-
+    @Autowired
+    private QuestionDao questionDao;
 
     private final String INPUT = "Kirill\nKotikov\n4\n2\n4\n4\n4\n";
     private final String OUTPUT =

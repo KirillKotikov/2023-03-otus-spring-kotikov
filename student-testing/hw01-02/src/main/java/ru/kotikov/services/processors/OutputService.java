@@ -1,5 +1,5 @@
 package ru.kotikov.services.processors;
 
 public interface OutputService {
-    void outputString(String s);
+    void printLine(String s);
 }
