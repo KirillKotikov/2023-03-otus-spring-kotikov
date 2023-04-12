@@ -24,47 +24,47 @@ public class StudentTestingServiceImplTest {
 
     private final String INPUT = "Kirill\nKotikov\n4\n2\n4\n4\n4\n";
     private final String OUTPUT =
-            """
-                    Enter your first name: \r
-                    Enter your last name: \r
-                    What is the latest version of Java?\r
-                    1) 17\r
-                    2) 23\r
-                    3) 99\r
-                    4) 20\r
-                    Enter an answer: \r
-                    What is the maximum complexity of a boolean expression allowed?\r
-                    1) 2\r
-                    2) 4\r
-                    3) 64\r
-                    4) 8\r
-                    Enter an answer: \r
-                    What is the style of writing a class name in Java?\r
-                    1) CamelCase\r
-                    2) lowerCamelCase\r
-                    3) snake_case\r
-                    4) dog@case\r
-                    Enter an answer: \r
-                    Select an example of a valid constant in Java.\r
-                    1) initial Const const\r
-                    2) String CONST\r
-                    3) static final String const\r
-                    4) static final String CONST\r
-                    Enter an answer: \r
-                    If the value of the field does not change during the execution of the program, then it should be?\r
-                    1) public\r
-                    2) static\r
-                    3) final\r
-                    4) Destroyed! :)\r
-                    Enter an answer: \r
-                    Test results of student Kirill Kotikov:\r
-                    Question №1: your answer = 4, correct = 4\r
-                    Question №2: your answer = 2, correct = 2\r
-                    Question №3: your answer = 4, correct = 1\r
-                    Question №4: your answer = 4, correct = 4\r
-                    Question №5: your answer = 4, correct = 3\r
-                    Test passed, count of correct answers = 3.\r
-                    """;
+            String.format(
+                    "Enter your first name: %1$s" +
+                    "Enter your last name: %1$s" +
+                    "What is the latest version of Java?%1$s" +
+                    "1) 17%1$s" +
+                    "2) 23%1$s" +
+                    "3) 99%1$s" +
+                    "4) 20%1$s" +
+                    "Enter an answer: %1$s" +
+                    "What is the maximum complexity of a boolean expression allowed?%1$s" +
+                    "1) 2%1$s" +
+                    "2) 4%1$s" +
+                    "3) 64%1$s" +
+                    "4) 8%1$s" +
+                    "Enter an answer: %1$s" +
+                    "What is the style of writing a class name in Java?%1$s" +
+                    "1) CamelCase%1$s" +
+                    "2) lowerCamelCase%1$s" +
+                    "3) snake_case%1$s" +
+                    "4) dog@case%1$s" +
+                    "Enter an answer: %1$s" +
+                    "Select an example of a valid constant in Java.%1$s" +
+                    "1) initial Const const%1$s" +
+                    "2) String CONST%1$s" +
+                    "3) static final String const%1$s" +
+                    "4) static final String CONST%1$s" +
+                    "Enter an answer: %1$s" +
+                    "If the value of the field does not change during the execution of the program, then it should be?%1$s" +
+                    "1) public%1$s" +
+                    "2) static%1$s" +
+                    "3) final%1$s" +
+                    "4) Destroyed! :)%1$s" +
+                    "Enter an answer: %1$s" +
+                    "Test results of student Kirill Kotikov:%1$s" +
+                    "Question №1: your answer = 4, correct = 4%1$s" +
+                    "Question №2: your answer = 2, correct = 2%1$s" +
+                    "Question №3: your answer = 4, correct = 1%1$s" +
+                    "Question №4: your answer = 4, correct = 4%1$s" +
+                    "Question №5: your answer = 4, correct = 3%1$s" +
+                    "Test passed, count of correct answers = 3.%1$s"
+                    , System.lineSeparator());
 
     @Test
     public void shouldGetCorrectOutput() {
