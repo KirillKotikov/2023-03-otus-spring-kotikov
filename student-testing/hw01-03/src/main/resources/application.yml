@@ -1,0 +1,10 @@
+spring:
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+
+questionDao:
+  minCorrectAnswers: 3
+
+application:
+  locale: en
