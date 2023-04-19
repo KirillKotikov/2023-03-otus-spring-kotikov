@@ -1,0 +1,5 @@
+Какая последняя версия Java?;1) 17,2) 23,3) 99,4) 20;4
+Какая максимальная вложенность логических блоков, согласно правилам OTUS?;1) 2,2) 4,3) 64,4) 8;2
+Каой стиль написания классов в Java?;1) CamelCase,2) lowerCamelCase,3) snake_case,4) dog@case;1
+Выберите правильный вариант константы в Java.;1) initial Const const,2) String CONST,3) static final String const,4) static final String CONST;4
+Если значение поля устанавливается однократно и не изменяется, то каким оно должно быть?;1) public,2) static,3) final,4) Destroyed! :);3
