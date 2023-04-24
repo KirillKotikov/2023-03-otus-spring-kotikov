@@ -24,6 +24,7 @@
     <modules>
         <module>student-testing-02</module>
         <module>student-testing-03</module>
+        <module>student-testing-04</module>
     </modules>
 
     <dependencies>
