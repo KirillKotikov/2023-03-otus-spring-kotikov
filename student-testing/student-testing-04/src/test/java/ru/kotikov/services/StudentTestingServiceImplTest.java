@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.MessageSource;
+import ru.kotikov.configs.AppProps;
 import ru.kotikov.dao.QuestionDaoImpl;
 import ru.kotikov.models.Student;
 
@@ -19,6 +21,12 @@ public class StudentTestingServiceImplTest {
 
     @Autowired
     private QuestionDaoImpl questionDaoImpl;
+
+    @Autowired
+    private MessageSource messageSource;
+
+    @Autowired
+    private AppProps appProps;
 
 
     private final String OUTPUT =
@@ -70,7 +78,7 @@ public class StudentTestingServiceImplTest {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(INPUT.getBytes());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         StudentTestingServiceImpl studentServiceImpl = new StudentTestingServiceImpl(
-                new IOServiceStreams(outputStream, inputStream), questionDaoImpl);
+                new IOServiceStreams(outputStream, inputStream), questionDaoImpl, messageSource, appProps);
         studentServiceImpl.startTesting(new Student("Kirill", "Kotikov"));
         assertEquals(OUTPUT, outputStream.toString(StandardCharsets.UTF_8));
     }

@@ -9,3 +9,4 @@ spring:
 application:
   locale: en
   min-correct-answers: 3
+  questions-file-path: src/test/resources/questions_${application.locale}.csv

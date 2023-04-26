@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.kotikov.models.Question;
+import ru.kotikov.providers.ResourceProvider;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,10 +22,13 @@ public class QuestionDaoImplTest {
     @Autowired
     private QuestionDaoImpl questionDaoImpl;
 
+    @Autowired
+    private ResourceProvider resourceProvider;
+
     @DisplayName("должен корректно получать вопросы из файла.")
     @Test
     public void shouldGetQuestions() {
-        List<Question> questions = questionDaoImpl.getAll();
+        List<Question> questions = questionDaoImpl.getAll(resourceProvider.getQuestionsFilePath());
         Map<String, Map<List<String>, String>> mapQuestions = new HashMap<>();
         for (Question question : questions) {
             Map<List<String>, String> map = new HashMap<>();

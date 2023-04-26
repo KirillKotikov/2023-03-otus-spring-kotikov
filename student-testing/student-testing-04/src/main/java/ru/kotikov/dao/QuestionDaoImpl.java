@@ -4,12 +4,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.kotikov.models.Question;
-import ru.kotikov.services.MessageService;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,13 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionDaoImpl implements QuestionDao {
 
-    private final MessageService messageService;
-
-    public List<Question> getAll() {
+    public List<Question> getAll(String filePath) {
         List<Question> questions = new ArrayList<>();
-        String questionsPath = messageService.getMessageSource().getMessage("questionsPath", null,
-                messageService.getLocaleProvider().getLocale());
-        try (InputStream inputStream = new FileInputStream(questionsPath)) {
+        try (InputStream inputStream = new FileInputStream(filePath)) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                 while (reader.ready()) {
                     String[] splitLine = reader.readLine().split(";");
