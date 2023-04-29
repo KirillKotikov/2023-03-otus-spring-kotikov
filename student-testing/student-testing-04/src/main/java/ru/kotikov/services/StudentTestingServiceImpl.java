@@ -1,36 +1,28 @@
 package ru.kotikov.services;
 
-import org.springframework.context.MessageSource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.kotikov.configs.AppProps;
 import ru.kotikov.dao.QuestionDao;
 import ru.kotikov.models.Question;
 import ru.kotikov.models.Student;
+import ru.kotikov.providers.QuestionParamsProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class StudentTestingServiceImpl implements StudentTestingService {
     private final IOService ioService;
 
     private final QuestionDao questionDao;
 
-    private final MessageSource messageSource;
+    private final MessageLocaleService messageLocaleService;
 
-    private final AppProps appProps;
-
-
-    public StudentTestingServiceImpl(IOServiceStreams ioService, QuestionDao questionDao,
-                                     MessageSource messageSource, AppProps appProps) {
-        this.ioService = ioService;
-        this.questionDao = questionDao;
-        this.messageSource = messageSource;
-        this.appProps = appProps;
-    }
+    private final QuestionParamsProvider questionParamsProvider;
 
     public void startTesting(Student student) {
-        List<Question> questions = questionDao.getAll(appProps.getQuestionsFilePath());
+        List<Question> questions = questionDao.getAll();
         List<String> studentAndCorrectAnswers = new ArrayList<>();
         getStudentAnswers(questions, studentAndCorrectAnswers);
         printResult(studentAndCorrectAnswers, student);
@@ -44,7 +36,8 @@ public class StudentTestingServiceImpl implements StudentTestingService {
                 ioService.printLine(answer);
             }
             studentAndCorrectAnswers.add(ioService.readLineWithPrompt(
-                    messageSource.getMessage("answer", null, appProps.getLocale())));
+                    messageLocaleService.getMessageSource().getMessage("answer", null,
+                            messageLocaleService.getLocaleProvider().getLocale())));
             studentAndCorrectAnswers.add(question.getCorrectAnswer());
         }
     }
@@ -56,24 +49,25 @@ public class StudentTestingServiceImpl implements StudentTestingService {
                 correctAnswersCount++;
             }
         }
-        int minCorrectAnswers = appProps.getMinCorrectAnswers();
+        int minCorrectAnswers = questionParamsProvider.getMinCorrectAnswers();
         if (correctAnswersCount >= minCorrectAnswers) {
-            ioService.printLine(String.format(messageSource.getMessage("testPassed", null,
-                    appProps.getLocale()), correctAnswersCount));
+            ioService.printLine(String.format(messageLocaleService.getMessageSource().getMessage("testPassed",
+                    null, messageLocaleService.getLocaleProvider().getLocale()), correctAnswersCount));
 
         } else {
-            ioService.printLine(String.format(messageSource.getMessage("testFailed", null,
-                    appProps.getLocale()), correctAnswersCount, minCorrectAnswers));
+            ioService.printLine(String.format(messageLocaleService.getMessageSource().getMessage("testFailed", null,
+                    messageLocaleService.getLocaleProvider().getLocale()), correctAnswersCount, minCorrectAnswers));
         }
     }
 
     private void printResult(List<String> result, Student student) {
-        ioService.printLine(String.format(messageSource.getMessage("testResults", null,
-                appProps.getLocale()), student.getFirstName(), student.getLastName()));
+        ioService.printLine(String.format(messageLocaleService.getMessageSource().getMessage("testResults", null,
+                messageLocaleService.getLocaleProvider().getLocale()), student.getFirstName(), student.getLastName()));
         int answerCount = 1;
         for (int i = 0; i < result.size(); i += 2) {
-            ioService.printLine(String.format(messageSource.getMessage("questionResult", null,
-                    appProps.getLocale()), answerCount, result.get(i), result.get(i + 1)));
+            ioService.printLine(String.format(messageLocaleService.getMessageSource().getMessage("questionResult",
+                            null, messageLocaleService.getLocaleProvider().getLocale()),
+                    answerCount, result.get(i), result.get(i + 1)));
             answerCount++;
         }
     }

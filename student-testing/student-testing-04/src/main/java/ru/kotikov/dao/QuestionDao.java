@@ -5,5 +5,5 @@ import ru.kotikov.models.Question;
 import java.util.List;
 
 public interface QuestionDao {
-    List<Question> getAll(String filePath);
+    List<Question> getAll();
 }
