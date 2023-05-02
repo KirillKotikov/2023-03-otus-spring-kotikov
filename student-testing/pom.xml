@@ -5,12 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <groupId>ru.kotikov</groupId>
+        <artifactId>2023-03-otus-spring-kotikov</artifactId>
+        <version>1.0</version>
     </parent>
 
-    <groupId>ru.kotikov</groupId>
     <artifactId>student-testing-parent</artifactId>
     <version>1.0</version>
     <name>student-testing-parent</name>
@@ -24,6 +23,7 @@
     <modules>
         <module>student-testing-02</module>
         <module>student-testing-03</module>
+        <module>student-testing-04</module>
     </modules>
 
     <dependencies>

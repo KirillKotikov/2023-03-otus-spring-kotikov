@@ -1,0 +1,9 @@
+spring:
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+
+application:
+  locale: ru_Ru
+  min-correct-answers: 3
+  questions-file-path: questions_${application.locale}.csv
