@@ -7,10 +7,9 @@ import ru.kotikov.models.Question;
 import ru.kotikov.providers.ResourceProvider;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +23,9 @@ public class QuestionDaoImpl implements QuestionDao {
 
     public List<Question> getAll() {
         List<Question> questions = new ArrayList<>();
-        try (InputStream inputStream = new FileInputStream(resourceProvider.getQuestionsFilePath())) {
+        try (InputStream inputStream =
+                     QuestionDaoImpl.class.getClassLoader()
+                             .getResourceAsStream(resourceProvider.getQuestionsFilePath())) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                 while (reader.ready()) {
                     String[] splitLine = reader.readLine().split(";");

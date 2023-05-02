@@ -6,4 +6,4 @@ spring:
 application:
   locale: ru_Ru
   min-correct-answers: 3
-  questions-file-path: student-testing/student-testing-04/src/main/resources/questions_${application.locale}.csv
+  questions-file-path: questions_${application.locale}.csv
