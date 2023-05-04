@@ -15,22 +15,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы с книгами должно ")
 @JdbcTest
-@Import(BookDaoJdbc.class)
-public class BookDaoJdbcTest {
+@Import(JdbcBookDao.class)
+public class JdbcBookDaoTest {
     @Autowired
-    private BookDaoJdbc bookDaoJdbc;
+    private JdbcBookDao jdbcBookDao;
 
     @DisplayName("считать общее количество книг")
     @Test
     public void shouldCountBooks() {
-        assertThat(bookDaoJdbc.count()).isEqualTo(2);
+        assertThat(jdbcBookDao.count()).isEqualTo(2);
     }
 
     @DisplayName("отображать все книги")
     @Test
     public void shouldShowAllGenres() {
-        assertThat(bookDaoJdbc.getAll()).hasSize(2);
-        assertThat(bookDaoJdbc.getAll()).containsAll(List.of(
+        assertThat(jdbcBookDao.getAll()).hasSize(2);
+        assertThat(jdbcBookDao.getAll()).containsAll(List.of(
                 new Book(1, "Aladdin",
                         new Author(1, "Aladdin author"),
                         new Genre(1, "Fairy tale")),
@@ -42,20 +42,20 @@ public class BookDaoJdbcTest {
     @DisplayName("добавлять новые книги")
     @Test
     public void shouldAddBooks() {
-        assertThat(bookDaoJdbc.count()).isEqualTo(2);
+        assertThat(jdbcBookDao.count()).isEqualTo(2);
         Author author = new Author(1, "Aladdin author");
         Genre genre = new Genre(1, "Fairy tale");
         Book book = new Book("Test", author, genre);
-        bookDaoJdbc.insert(book);
-        assertThat(bookDaoJdbc.count()).isEqualTo(3);
-        assertThat(bookDaoJdbc.getById(3)).isEqualTo(book);
+        jdbcBookDao.insert(book);
+        assertThat(jdbcBookDao.count()).isEqualTo(3);
+        assertThat(jdbcBookDao.getById(3)).isEqualTo(book);
     }
 
     @DisplayName("искать книгу по id")
     @Test
     public void shouldSearchById() {
-        assertThat(bookDaoJdbc.getById(1)).isNotNull();
-        assertThat(bookDaoJdbc.getById(1)).isEqualTo(new Book(1, "Aladdin",
+        assertThat(jdbcBookDao.getById(1)).isNotNull();
+        assertThat(jdbcBookDao.getById(1)).isEqualTo(new Book(1, "Aladdin",
                 new Author(1, "Aladdin author"),
                 new Genre(1, "Fairy tale")));
     }
@@ -66,17 +66,17 @@ public class BookDaoJdbcTest {
         Author authorForUpdate = new Author(1, "Aladdin author");
         Genre genreForUpdate = new Genre(1, "Fairy tale");
         Book updatedBook = new Book(2, "Test", authorForUpdate, genreForUpdate);
-        assertThat(bookDaoJdbc.update(updatedBook)).isEqualTo(updatedBook);
+        assertThat(jdbcBookDao.update(updatedBook)).isEqualTo(updatedBook);
     }
 
     @DisplayName("удалять книги")
     @Test
     public void shouldDeleteBooks() {
-        assertThat(bookDaoJdbc.count()).isEqualTo(2);
-        assertThat(bookDaoJdbc.deleteById(1)).isEqualTo(1);
-        assertThat(bookDaoJdbc.deleteById(3)).isEqualTo(0);
-        assertThat(bookDaoJdbc.count()).isEqualTo(1);
-        assertThat(bookDaoJdbc.getAll()).contains(
+        assertThat(jdbcBookDao.count()).isEqualTo(2);
+        assertThat(jdbcBookDao.deleteById(1)).isEqualTo(1);
+        assertThat(jdbcBookDao.deleteById(3)).isEqualTo(0);
+        assertThat(jdbcBookDao.count()).isEqualTo(1);
+        assertThat(jdbcBookDao.getAll()).contains(
                 new Book(2, "Alice in wonderland",
                         new Author(2, "Alice author"),
                         new Genre(2, "Fantasy")));

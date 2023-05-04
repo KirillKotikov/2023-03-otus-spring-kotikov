@@ -7,9 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
-public class Book {
+public class Book extends AbstractLibraryModel{
     private long id;
 
     private String name;

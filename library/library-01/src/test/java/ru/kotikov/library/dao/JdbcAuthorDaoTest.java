@@ -13,17 +13,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы с авторами должно ")
 @JdbcTest
-@Import(AuthorDaoJdbc.class)
-public class AuthorDaoJdbcTest {
+@Import(JdbcAuthorDao.class)
+public class JdbcAuthorDaoTest {
 
     @Autowired
-    private AuthorDaoJdbc authorDaoJdbc;
+    private JdbcAuthorDao jdbcAuthorDao;
 
     @DisplayName("отображать всех авторов")
     @Test
     public void shouldShowAllAuthors() {
-        assertThat(authorDaoJdbc.getAll()).hasSize(5);
-        assertThat(authorDaoJdbc.getAll()).containsAll(List.of(
+        assertThat(jdbcAuthorDao.getAll()).hasSize(5);
+        assertThat(jdbcAuthorDao.getAll()).containsAll(List.of(
                 new Author(1, "Aladdin author"),
                 new Author(2, "Alice author"),
                 new Author(3, "Winnie-the-Pooh author"),
@@ -34,7 +34,7 @@ public class AuthorDaoJdbcTest {
     @DisplayName("искать автора по id")
     @Test
     public void shouldSearchById() {
-        assertThat(authorDaoJdbc.getById(1)).isNotNull();
-        assertThat(authorDaoJdbc.getById(1)).isEqualTo(new Author(1, "Aladdin author"));
+        assertThat(jdbcAuthorDao.getById(1)).isNotNull();
+        assertThat(jdbcAuthorDao.getById(1)).isEqualTo(new Author(1, "Aladdin author"));
     }
 }

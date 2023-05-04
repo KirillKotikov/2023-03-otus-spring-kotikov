@@ -13,16 +13,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы с жанрами должно ")
 @JdbcTest
-@Import(GenreDaoJdbc.class)
+@Import(JdbcGenreDao.class)
 public class GenreDaoTest {
     @Autowired
-    private GenreDaoJdbc genreDaoJdbc;
+    private JdbcGenreDao jdbcGenreDao;
 
     @DisplayName("отображать все жанры")
     @Test
     public void shouldShowAllGenres() {
-        assertThat(genreDaoJdbc.getAll()).hasSize(5);
-        assertThat(genreDaoJdbc.getAll()).containsAll(List.of(
+        assertThat(jdbcGenreDao.getAll()).hasSize(5);
+        assertThat(jdbcGenreDao.getAll()).containsAll(List.of(
                 new Genre(1, "Fairy tale"),
                 new Genre(2, "Fantasy"),
                 new Genre(3, "Classic"),
@@ -33,7 +33,7 @@ public class GenreDaoTest {
     @DisplayName("искать автора по id")
     @Test
     public void shouldSearchById() {
-        assertThat(genreDaoJdbc.getById(1)).isNotNull();
-        assertThat(genreDaoJdbc.getById(1)).isEqualTo(new Genre(1, "Fairy tale"));
+        assertThat(jdbcGenreDao.getById(1)).isNotNull();
+        assertThat(jdbcGenreDao.getById(1)).isEqualTo(new Genre(1, "Fairy tale"));
     }
 }

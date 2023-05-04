@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Component;
-import ru.kotikov.library.Exceptions.DataNotFountException;
 import ru.kotikov.library.models.Genre;
 
 import java.sql.ResultSet;
@@ -13,10 +12,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class GenreDaoJdbc implements GenreDao {
+public class JdbcGenreDao implements GenreDao {
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public GenreDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public JdbcGenreDao(NamedParameterJdbcOperations namedParameterJdbcOperations) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
@@ -41,7 +40,7 @@ public class GenreDaoJdbc implements GenreDao {
                             WHERE id = :id
                             """, mapSqlParameterSource, new GenreMapper());
         } catch (EmptyResultDataAccessException exception) {
-            throw new DataNotFountException("Genre by id = " + id + " not found");
+            return null;
         }
     }
 

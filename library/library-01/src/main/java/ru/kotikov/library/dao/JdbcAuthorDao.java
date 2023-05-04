@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Component;
-import ru.kotikov.library.Exceptions.DataNotFountException;
 import ru.kotikov.library.models.Author;
 
 import java.sql.ResultSet;
@@ -13,11 +12,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class AuthorDaoJdbc implements AuthorDao {
+public class JdbcAuthorDao implements AuthorDao {
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public AuthorDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public JdbcAuthorDao(NamedParameterJdbcOperations namedParameterJdbcOperations) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
@@ -42,7 +41,7 @@ public class AuthorDaoJdbc implements AuthorDao {
                             WHERE id = :id
                             """, mapSqlParameterSource, new AuthorMapper());
         } catch (EmptyResultDataAccessException exception) {
-            throw new DataNotFountException("Author by id = " + id + " not found");
+            return null;
         }
     }
 

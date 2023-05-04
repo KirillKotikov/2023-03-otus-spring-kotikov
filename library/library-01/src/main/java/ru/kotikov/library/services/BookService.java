@@ -1,15 +1,21 @@
 package ru.kotikov.library.services;
 
+import ru.kotikov.library.Exceptions.DataNotFoundException;
+import ru.kotikov.library.models.Book;
+
+import java.util.List;
+
 public interface BookService {
-    String countAllBooks();
+    int countAllBooks();
 
-    String getAllBooks();
+    List<Book> getAllBooks();
 
-    String addBook(String name, long authorId, long genreId);
+    Book addBook(String name, long authorId, long genreId) throws DataNotFoundException;
 
-    String getBookById(long id);
+    Book getBookById(long id) throws DataNotFoundException;
 
-    String updateBook(long id, String name, Long authorId, Long genreId);
+    Book updateBook(long id, String name, Long authorId, Long genreId)
+            throws DataNotFoundException;
 
-    String deleteBookById(long id);
+    int deleteBookById(long id);
 }

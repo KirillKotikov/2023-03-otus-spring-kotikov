@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class BookDaoJdbc implements BookDao {
+public class JdbcBookDao implements BookDao {
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public JdbcBookDao(NamedParameterJdbcOperations namedParameterJdbcOperations) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
