@@ -1,4 +1,4 @@
-package ru.kotikov.library.dao;
+package ru.kotikov.library.repositories;
 
 
 import ru.kotikov.library.models.Book;

@@ -1,9 +1,9 @@
-package ru.kotikov.library.dao;
+package ru.kotikov.library.repositories;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.kotikov.library.models.Genre;
 
@@ -12,17 +12,17 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы с жанрами должно ")
-@JdbcTest
-@Import(JdbcGenreDao.class)
-public class GenreDaoTest {
+@DataJpaTest
+@Import(JpaGenreRepository.class)
+public class JpaGenreRepositoryTest {
     @Autowired
-    private JdbcGenreDao jdbcGenreDao;
+    private JpaGenreRepository jdbcGenreDao;
 
     @DisplayName("отображать все жанры")
     @Test
     public void shouldShowAllGenres() {
-        assertThat(jdbcGenreDao.getAll()).hasSize(5);
-        assertThat(jdbcGenreDao.getAll()).containsAll(List.of(
+        assertThat(jdbcGenreDao.findAll()).hasSize(5);
+        assertThat(jdbcGenreDao.findAll()).containsAll(List.of(
                 new Genre(1, "Fairy tale"),
                 new Genre(2, "Fantasy"),
                 new Genre(3, "Classic"),
@@ -33,7 +33,7 @@ public class GenreDaoTest {
     @DisplayName("искать автора по id")
     @Test
     public void shouldSearchById() {
-        assertThat(jdbcGenreDao.getById(1)).isNotNull();
-        assertThat(jdbcGenreDao.getById(1)).isEqualTo(new Genre(1, "Fairy tale"));
+        assertThat(jdbcGenreDao.findById(1)).isNotNull();
+        assertThat(jdbcGenreDao.findById(1)).isPresent().get().isEqualTo(new Genre(1, "Fairy tale"));
     }
 }
