@@ -60,7 +60,7 @@ public class BookServiceImplTest {
 
     @DisplayName("добавлять книгу")
     @Test
-    public void shouldAddBook() throws DataNotFoundException {
+    public void shouldAddBook()  {
         Book expectedBook = new Book(3, "Test test", author1, genre1);
         assertThat(bookService.addBook("Test test", 1, 1)).isEqualTo(expectedBook);
     }
@@ -83,7 +83,7 @@ public class BookServiceImplTest {
 
     @DisplayName("найти книгу по id")
     @Test
-    public void shouldFoundBookById() throws DataNotFoundException {
+    public void shouldFoundBookById()  {
         Book bookById = bookService.getBookById(1);
         assertThat(bookById).isEqualTo(book1);
     }
@@ -98,7 +98,7 @@ public class BookServiceImplTest {
 
     @DisplayName("обновлять книгу")
     @Test
-    public void shouldUpdateBook() throws DataNotFoundException {
+    public void shouldUpdateBook()  {
         Book expectedBook = new Book(1, "Test test", author2, genre2);
         assertThat(bookService.updateBook(1, "Test test", 2L, 2L)).isEqualTo(expectedBook);
     }

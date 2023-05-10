@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
-public class Genre extends AbstractLibraryModel{
+public class Genre {
     private long id;
 
     private String name;

@@ -34,8 +34,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book addBook(String name, long authorId, long genreId)
-            throws DataNotFoundException {
+    public Book addBook(String name, long authorId, long genreId) {
         Author author = authorDao.getById(authorId);
         if (author == null) {
             throw new DataNotFoundException(String.format(ExceptionMessages.AUTHOR_NOT_FOUND, authorId));
@@ -48,7 +47,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBookById(long id) throws DataNotFoundException {
+    public Book getBookById(long id) {
         Book resultBook = bookDao.getById(id);
         if (resultBook == null) {
             throw new DataNotFoundException(String.format(ExceptionMessages.BOOK_NOT_FOUND, id));
@@ -57,8 +56,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book updateBook(long id, String name, Long authorId, Long genreId)
-            throws DataNotFoundException {
+    public Book updateBook(long id, String name, Long authorId, Long genreId) {
         Book bookForUpdate = bookDao.getById(id);
         if (bookForUpdate == null) {
             throw new DataNotFoundException(String.format(ExceptionMessages.BOOK_NOT_FOUND, id));
