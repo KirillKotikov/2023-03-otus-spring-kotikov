@@ -15,7 +15,16 @@
     <version>1.0</version>
     <name>2023-03-otus-spring-kotikov</name>
     <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <modules>
         <module>student-testing</module>
+        <module>library</module>
     </modules>
 </project>

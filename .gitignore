@@ -1,5 +1,6 @@
 /.idea/
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!/src/main//target/
-!/src/test//target/
+!/src/main//target/!/src/test/
+.mvn/
+/library/library-01/.mvn/
