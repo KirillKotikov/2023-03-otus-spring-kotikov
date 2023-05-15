@@ -9,7 +9,6 @@ import ru.kotikov.library.models.Comment;
 import ru.kotikov.library.repositories.CommentRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -42,18 +41,15 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public Comment updateComment(Comment comment) {
+        comment = getById(comment.getId());
         return commentRepository.save(comment);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Comment getById(long id) {
-        Optional<Comment> optionalComment = commentRepository.findById(id);
-        if (optionalComment.isPresent()) {
-            return optionalComment.get();
-        } else {
-            throw new DataNotFoundException(String.format(ExceptionMessages.COMMENT_NOT_FOUND, id));
-        }
+        return commentRepository.findById(id).orElseThrow(()
+                -> new DataNotFoundException(String.format(ExceptionMessages.COMMENT_NOT_FOUND, id)));
     }
 
     @Override

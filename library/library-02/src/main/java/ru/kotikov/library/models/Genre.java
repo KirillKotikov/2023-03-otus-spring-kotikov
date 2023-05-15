@@ -15,10 +15,10 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "genres")
-@EqualsAndHashCode(callSuper = false)
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

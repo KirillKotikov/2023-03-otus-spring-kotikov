@@ -3,7 +3,7 @@ package ru.kotikov.library.shell;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.kotikov.library.Exceptions.DataNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kotikov.library.models.Author;
 import ru.kotikov.library.models.Book;
 import ru.kotikov.library.models.Comment;
@@ -51,22 +51,15 @@ public class ShellCommands {
             key = {"add-book", "ab"})
     public String addBook(@ShellOption String bookName, @ShellOption long authorId, @ShellOption long genreId) {
         Book savedBook;
-        try {
             savedBook = bookService.addBook(bookName, authorId, genreId);
-        } catch (DataNotFoundException e) {
-            return e.getMessage();
-        }
         return "Книга {" + ModelMapper.mapModelToString(savedBook) + "} успешно сохранена!";
     }
 
     @ShellMethod(value = "Поиск книги по id. Пример: get-book-by-id <bookId> ", key = {"get-book-by-id", "gbbi"})
+    @Transactional(readOnly = true)
     public String getBookById(@ShellOption long bookId) {
         Book bookById;
-        try {
             bookById = bookService.getBookById(bookId);
-        } catch (DataNotFoundException e) {
-            return e.getMessage();
-        }
         return ModelMapper.mapModelToString(bookById);
     }
 
@@ -75,11 +68,7 @@ public class ShellCommands {
     public String updateBook(@ShellOption long bookId, @ShellOption String bookName,
                              @ShellOption long authorId, @ShellOption long genreId) {
         Book updatedBook;
-        try {
             updatedBook = bookService.updateBook(bookId, bookName, authorId, genreId);
-        } catch (DataNotFoundException e) {
-            return e.getMessage();
-        }
         return "Обновлённая книга: " + ModelMapper.mapModelToString(updatedBook);
     }
 
@@ -122,11 +111,7 @@ public class ShellCommands {
     public String showBookComments(@ShellOption Long bookId) {
         StringBuilder stringBuilder = new StringBuilder();
         Book bookById;
-        try {
             bookById = bookService.getBookById(bookId);
-        } catch (DataNotFoundException e) {
-            return e.getMessage();
-        }
         for (Comment comment : commentService.getByBook(bookById)) {
             stringBuilder.append(ModelMapper.mapModelToString(comment)).append("\n");
         }
@@ -137,11 +122,7 @@ public class ShellCommands {
             key = {"add-comment", "ac"})
     public String addComment(@ShellOption long bookId, @ShellOption String text) {
         Book book;
-        try {
             book = bookService.getBookById(bookId);
-        } catch (DataNotFoundException e) {
-            return e.getMessage();
-        }
         Comment comment = commentService.addComment(new Comment(text, book));
         return "Комментарий {" + ModelMapper.mapModelToString(comment) + "} успешно добавлен!";
     }
@@ -150,11 +131,7 @@ public class ShellCommands {
             key = {"edit-comment", "ec"})
     public String editComment(@ShellOption long commentId, @ShellOption String text) {
         Comment oldComment;
-        try {
             oldComment = commentService.getById(commentId);
-        } catch (DataNotFoundException e) {
-            return e.getMessage();
-        }
         oldComment.setText(text);
         Comment editedComment = commentService.updateComment(oldComment);
         return "Обновлённый комментарий: " + ModelMapper.mapModelToString(editedComment);
@@ -162,13 +139,8 @@ public class ShellCommands {
 
     @ShellMethod(value = "Поиск комментария по id. Пример: get-comment-by-id <commentId> ",
             key = {"get-comment-by-id", "gcbi"})
-    public String getCommentById(@ShellOption long commntId) {
-        Comment commentById;
-        try {
-            commentById = commentService.getById(commntId);
-        } catch (DataNotFoundException e) {
-            return e.getMessage();
-        }
+    public String getCommentById(@ShellOption long commentId) {
+        Comment commentById = commentService.getById(commentId);
         return ModelMapper.mapModelToString(commentById);
     }
 

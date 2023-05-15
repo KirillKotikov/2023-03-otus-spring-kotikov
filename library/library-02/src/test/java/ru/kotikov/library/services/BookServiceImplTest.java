@@ -83,6 +83,7 @@ public class BookServiceImplTest {
 
     @DisplayName("найти книгу по id")
     @Test
+//    @Transactional
     public void shouldFoundBookById() {
         Book bookById = bookService.getBookById(1);
         assertThat(bookById).isEqualTo(book1);

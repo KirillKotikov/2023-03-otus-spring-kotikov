@@ -45,15 +45,11 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book addBook(String name, long authorId, long genreId) {
-        Optional<Author> author = authorRepository.findById(authorId);
-        if (author.isEmpty()) {
-            throw new DataNotFoundException(String.format(ExceptionMessages.AUTHOR_NOT_FOUND, authorId));
-        }
-        Optional<Genre> genre = genreRepository.findById(genreId);
-        if (genre.isEmpty()) {
-            throw new DataNotFoundException(String.format(ExceptionMessages.GENRE_NOT_FOUND, genreId));
-        }
-        return bookRepository.save(new Book(name, author.get(), genre.get()));
+        Author author = authorRepository.findById(authorId).orElseThrow(()
+                -> new DataNotFoundException(String.format(ExceptionMessages.AUTHOR_NOT_FOUND, authorId)));
+        Genre genre = genreRepository.findById(genreId).orElseThrow(()
+                -> new DataNotFoundException(String.format(ExceptionMessages.GENRE_NOT_FOUND, genreId)));
+        return bookRepository.save(new Book(name, author, genre));
     }
 
     @Override
@@ -69,24 +65,17 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book updateBook(long id, String name, Long authorId, Long genreId) {
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        if (optionalBook.isEmpty()) {
-            throw new DataNotFoundException(String.format(ExceptionMessages.BOOK_NOT_FOUND, id));
-        }
-        Book bookForUpdate = optionalBook.get();
-        Optional<Author> author = authorRepository.findById(authorId);
-        if (author.isEmpty()) {
-            throw new DataNotFoundException(String.format(ExceptionMessages.AUTHOR_NOT_FOUND, authorId));
-        }
-        bookForUpdate.setAuthor(author.get());
-        Optional<Genre> genre = genreRepository.findById(genreId);
-        if (genre.isEmpty()) {
-            throw new DataNotFoundException(String.format(ExceptionMessages.GENRE_NOT_FOUND, genreId));
-        }
-        bookForUpdate.setGenre(genre.get());
+        Book bookForUpdate = bookRepository.findById(id).orElseThrow(()
+                -> new DataNotFoundException(String.format(ExceptionMessages.BOOK_NOT_FOUND, id)));
+        Author author = authorRepository.findById(authorId).orElseThrow(()
+                -> new DataNotFoundException(String.format(ExceptionMessages.AUTHOR_NOT_FOUND, authorId)));
+        bookForUpdate.setAuthor(author);
+        Genre genre = genreRepository.findById(genreId).orElseThrow(()
+                -> new DataNotFoundException(String.format(ExceptionMessages.GENRE_NOT_FOUND, genreId)));
+        bookForUpdate.setGenre(genre);
         bookForUpdate.setName(name);
         return bookRepository.save(bookForUpdate);
-    }
+}
 
     @Override
     @Transactional
