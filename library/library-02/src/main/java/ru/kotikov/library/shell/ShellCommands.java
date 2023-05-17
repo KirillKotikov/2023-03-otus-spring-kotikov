@@ -130,10 +130,7 @@ public class ShellCommands {
     @ShellMethod(value = "Обновление комментария. Пример: edit-comment <commentId> <'text'> ",
             key = {"edit-comment", "ec"})
     public String editComment(@ShellOption long commentId, @ShellOption String text) {
-        Comment oldComment;
-            oldComment = commentService.getById(commentId);
-        oldComment.setText(text);
-        Comment editedComment = commentService.updateComment(oldComment);
+        Comment editedComment = commentService.updateCommentText(commentId, text);
         return "Обновлённый комментарий: " + ModelMapper.mapModelToString(editedComment);
     }
 

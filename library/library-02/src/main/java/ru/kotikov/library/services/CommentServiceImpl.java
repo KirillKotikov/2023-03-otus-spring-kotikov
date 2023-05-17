@@ -40,9 +40,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public Comment updateComment(Comment comment) {
-        comment = getById(comment.getId());
-        return commentRepository.save(comment);
+    public Comment updateCommentText(long commentId, String text) {
+        Comment commentForUpdate = getById(commentId);
+        commentForUpdate.setText(text);
+        return commentRepository.save(commentForUpdate);
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface CommentService {
 
     Comment addComment(Comment comment);
 
-    Comment updateComment(Comment comment);
+    Comment updateCommentText(long commentId, String text);
 
     Comment getById(long id);
 

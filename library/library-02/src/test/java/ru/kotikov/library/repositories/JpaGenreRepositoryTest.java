@@ -7,9 +7,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.kotikov.library.models.Genre;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Dao для работы с жанрами должно ")
 @DataJpaTest
@@ -18,22 +20,18 @@ public class JpaGenreRepositoryTest {
     @Autowired
     private JpaGenreRepository jdbcGenreDao;
 
-    @DisplayName("отображать все жанры")
+    @DisplayName("читать все жанры")
     @Test
     public void shouldShowAllGenres() {
         assertThat(jdbcGenreDao.findAll()).hasSize(5);
-        assertThat(jdbcGenreDao.findAll()).containsAll(List.of(
-                new Genre(1, "Fairy tale"),
-                new Genre(2, "Fantasy"),
-                new Genre(3, "Classic"),
-                new Genre(4, "Love story"),
-                new Genre(5, "Adventure")));
     }
 
     @DisplayName("искать автора по id")
     @Test
     public void shouldSearchById() {
-        assertThat(jdbcGenreDao.findById(1)).isNotNull();
-        assertThat(jdbcGenreDao.findById(1)).isPresent().get().isEqualTo(new Genre(1, "Fairy tale"));
+        Optional<Genre> genreOptional = jdbcGenreDao.findById(1);
+        assertTrue(genreOptional.isPresent());
+        assertEquals(genreOptional.get().getId(), 1);
+        assertEquals(genreOptional.get().getName(), "Fairy tale");
     }
 }

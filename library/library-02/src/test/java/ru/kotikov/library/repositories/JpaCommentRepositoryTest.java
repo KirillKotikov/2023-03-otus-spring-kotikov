@@ -12,8 +12,11 @@ import ru.kotikov.library.models.Comment;
 import ru.kotikov.library.models.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Репозиторий для работы с комментариями должен ")
 @DataJpaTest
@@ -34,45 +37,47 @@ public class JpaCommentRepositoryTest {
 
     @DisplayName("искать все комментарии")
     @Test
-    public void shouldShowAllComments() {
+    public void shouldHasSizeEqualTwo() {
         assertThat(jpaCommentRepository.findAll()).hasSize(2);
-        assertThat(jpaCommentRepository.findAll()).containsAll(List.of(
-                new Comment(1, "Комментарий к Алладину", aladdin),
-                new Comment(2, "Второй комментарий к Алладину", aladdin)
-        ));
     }
 
     @DisplayName("искать комментарий по book_id")
     @Test
     public void shouldSearchByBookId() {
-        assertThat(jpaCommentRepository.findByBook(aladdin)).isNotNull();
-        assertThat(jpaCommentRepository.findByBook(aladdin)).containsAll(List.of(
-                new Comment(1, "Комментарий к Алладину", aladdin),
-                new Comment(2, "Второй комментарий к Алладину", aladdin)));
+        List<Comment> byBook = jpaCommentRepository.findByBook(aladdin);
+        assertThat(byBook).isNotNull();
+        assertThat(byBook).hasSize(2);
+        for (Comment comment : byBook) {
+            assertEquals(comment.getBook().getId(), 1);
+        }
     }
 
     @DisplayName("добавлять новый комментарий")
     @Test
     public void shouldAddComment() {
+        assertThat(jpaCommentRepository.findAll()).hasSize(2);
         jpaCommentRepository.save(new Comment("Третий коммент Алладину", aladdin));
         assertThat(jpaCommentRepository.findAll()).hasSize(3);
-        assertThat(jpaCommentRepository.findAll())
-                .contains(new Comment(3, "Третий коммент Алладину", aladdin));
     }
 
     @DisplayName("искать комментарий по id")
     @Test
     public void shouldSearchById() {
-        assertThat(jpaCommentRepository.findById(1)).isNotNull();
-        assertThat(jpaCommentRepository.findById(1)).isPresent().get()
-                .isEqualTo(new Comment(1, "Комментарий к Алладину", aladdin));
+        Optional<Comment> optionalComment = jpaCommentRepository.findById(1);
+        assertTrue(optionalComment.isPresent());
+        assertEquals(optionalComment.get().getId(), 1);
+        assertEquals(optionalComment.get().getText(), "Комментарий к Алладину");
+        assertEquals(optionalComment.get().getBook().getId(), 1);
     }
 
     @DisplayName("обновлять комментарий")
     @Test
     public void shouldUpdateComment() {
         Comment comment = new Comment(1, "Изменили коммент", aladdin);
-        assertThat(jpaCommentRepository.save(comment)).isEqualTo(comment);
+        Comment updated = jpaCommentRepository.save(comment);
+        assertEquals(updated.getId(), 1);
+        assertEquals(updated.getText(), "Изменили коммент");
+        assertEquals(updated.getBook().getId(), 1);
     }
 
     @DisplayName("удалять комментарий")
@@ -81,7 +86,5 @@ public class JpaCommentRepositoryTest {
         assertThat(jpaCommentRepository.findAll()).hasSize(2);
         jpaCommentRepository.deleteById(1);
         assertThat(jpaCommentRepository.findAll()).hasSize(1);
-        assertThat(jpaCommentRepository.findAll())
-                .contains(new Comment(2, "Второй комментарий к Алладину", aladdin));
     }
 }

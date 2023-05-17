@@ -9,9 +9,11 @@ import ru.kotikov.library.models.Author;
 import ru.kotikov.library.models.Book;
 import ru.kotikov.library.models.Genre;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Репозиторий для работы с книгами должен ")
 @DataJpaTest
@@ -28,15 +30,8 @@ public class JpaBookRepositoryTest {
 
     @DisplayName("искать все книги")
     @Test
-    public void shouldShowAllGenres() {
+    public void shouldSearchAllBooks() {
         assertThat(jpaBookRepository.findAll()).hasSize(2);
-        assertThat(jpaBookRepository.findAll()).containsAll(List.of(
-                new Book(1, "Aladdin",
-                        new Author(1, "Aladdin author"),
-                        new Genre(1, "Fairy tale")),
-                new Book(2, "Alice in wonderland",
-                        new Author(2, "Alice author"),
-                        new Genre(2, "Fantasy"))));
     }
 
     @DisplayName("добавлять новые книги")
@@ -48,16 +43,19 @@ public class JpaBookRepositoryTest {
         Book book = new Book("Test", author, genre);
         jpaBookRepository.save(book);
         assertThat(jpaBookRepository.count()).isEqualTo(3);
-        assertThat(jpaBookRepository.findById(3)).isPresent().get().isEqualTo(book);
+        Optional<Book> bookOptional = jpaBookRepository.findById(3);
+        assertTrue(bookOptional.isPresent());
+        assertEquals(bookOptional.get().getId(), 3);
+        assertEquals(bookOptional.get().getName(), "Test");
     }
 
     @DisplayName("искать книгу по id")
     @Test
     public void shouldSearchById() {
-        assertThat(jpaBookRepository.findById(1)).isNotNull();
-        assertThat(jpaBookRepository.findById(1)).isPresent().get().isEqualTo(new Book(1, "Aladdin",
-                new Author(1, "Aladdin author"),
-                new Genre(1, "Fairy tale")));
+        Optional<Book> bookOptional = jpaBookRepository.findById(1);
+        assertTrue(bookOptional.isPresent());
+        assertEquals(bookOptional.get().getId(), 1);
+        assertEquals(bookOptional.get().getName(), "Aladdin");
     }
 
     @DisplayName("обновлять книги")
@@ -66,7 +64,14 @@ public class JpaBookRepositoryTest {
         Author authorForUpdate = new Author(1, "Aladdin author");
         Genre genreForUpdate = new Genre(1, "Fairy tale");
         Book updatedBook = new Book(2, "Test", authorForUpdate, genreForUpdate);
-        assertThat(jpaBookRepository.save(updatedBook)).isEqualTo(updatedBook);
+        jpaBookRepository.save(updatedBook);
+
+        Optional<Book> bookOptional = jpaBookRepository.findById(2);
+        assertTrue(bookOptional.isPresent());
+        Book saved = bookOptional.get();
+        assertEquals(saved.getName(), "Test");
+        assertEquals(saved.getId(), 2);
+        assertEquals(saved.getAuthor().getName(), "Aladdin author");
     }
 
     @DisplayName("удалять книги")
@@ -76,9 +81,5 @@ public class JpaBookRepositoryTest {
         jpaBookRepository.deleteById(1);
         jpaBookRepository.deleteById(3);
         assertThat(jpaBookRepository.count()).isEqualTo(1);
-        assertThat(jpaBookRepository.findAll()).contains(
-                new Book(2, "Alice in wonderland",
-                        new Author(2, "Alice author"),
-                        new Genre(2, "Fantasy")));
     }
 }

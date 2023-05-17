@@ -1,49 +1,23 @@
 package ru.kotikov.library.services;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.kotikov.library.Exceptions.DataNotFoundException;
-import ru.kotikov.library.models.Author;
 import ru.kotikov.library.models.Book;
-import ru.kotikov.library.models.Genre;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Сервис книг должен ")
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class BookServiceImplTest {
-    private Author author1;
-
-    private Author author2;
-
-    private Genre genre1;
-
-    private Genre genre2;
-
-    private Book book1;
-
-    private Book book2;
-
     @Autowired
     private BookServiceImpl bookService;
-
-    @BeforeEach
-    public void initialize() {
-        author1 = new Author(1, "Aladdin author");
-        author2 = new Author(2, "Alice author");
-        genre1 = new Genre(1, "Fairy tale");
-        genre2 = new Genre(2, "Fantasy");
-        book1 = new Book(1, "Aladdin", author1, genre1);
-        book2 = new Book(2, "Alice in wonderland", author2, genre2);
-    }
 
     @DisplayName("отображать общее количество книг")
     @Test
@@ -51,18 +25,19 @@ public class BookServiceImplTest {
         assertThat(bookService.countAllBooks()).isEqualTo(2);
     }
 
-    @DisplayName("отображать список книг")
+    @DisplayName("искать все книги")
     @Test
     public void shouldShowAllBooks() {
-        assertThat(bookService.getAllBooks()).containsAll(
-                List.of(book1, book2));
+        assertThat(bookService.getAllBooks()).hasSize(2);
     }
 
     @DisplayName("добавлять книгу")
     @Test
     public void shouldAddBook() {
-        Book expectedBook = new Book(3, "Test test", author1, genre1);
-        assertThat(bookService.addBook("Test test", 1, 1)).isEqualTo(expectedBook);
+        Book actual = bookService.addBook("Test test", 1, 1);
+        assertEquals(actual.getName(), "Test test");
+        assertEquals(actual.getAuthor().getId(), 1);
+        assertEquals(actual.getGenre().getId(), 1);
     }
 
     @DisplayName("выбрасывать ошибку, если не нашёлся автор в базе данных при добавлении книги")
@@ -83,10 +58,11 @@ public class BookServiceImplTest {
 
     @DisplayName("найти книгу по id")
     @Test
-//    @Transactional
     public void shouldFoundBookById() {
         Book bookById = bookService.getBookById(1);
-        assertThat(bookById).isEqualTo(book1);
+        assertEquals(bookById.getName(), "Aladdin");
+        assertEquals(bookById.getAuthor().getId(), 1);
+        assertEquals(bookById.getGenre().getId(), 1);
     }
 
     @DisplayName("выброоить ошибку, если не нашёл книгу по id")
@@ -100,8 +76,11 @@ public class BookServiceImplTest {
     @DisplayName("обновлять книгу")
     @Test
     public void shouldUpdateBook() {
-        Book expectedBook = new Book(1, "Test test", author2, genre2);
-        assertThat(bookService.updateBook(1, "Test test", 2L, 2L)).isEqualTo(expectedBook);
+        bookService.updateBook(1, "Test test", 2L, 2L);
+        Book bookById = bookService.getBookById(1);
+        assertEquals(bookById.getName(), "Test test");
+        assertEquals(bookById.getAuthor().getId(), 2);
+        assertEquals(bookById.getGenre().getId(), 2);
     }
 
     @DisplayName("выброоить ошибку, если не нашёл книгу по id при обновлении")

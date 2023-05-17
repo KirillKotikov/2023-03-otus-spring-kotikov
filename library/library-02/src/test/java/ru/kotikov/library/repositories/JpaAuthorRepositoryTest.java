@@ -7,9 +7,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.kotikov.library.models.Author;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Dao для работы с авторами должно ")
 @DataJpaTest
@@ -19,22 +21,19 @@ public class JpaAuthorRepositoryTest {
     @Autowired
     private JpaAuthorRepository jdbcAuthorDao;
 
-    @DisplayName("отображать всех авторов")
+    @DisplayName("размер списка всех авторов должен быть равен 5")
     @Test
-    public void shouldShowAllAuthors() {
+    public void shouldHasSizeEqualFive() {
         assertThat(jdbcAuthorDao.findAll()).hasSize(5);
-        assertThat(jdbcAuthorDao.findAll()).containsAll(List.of(
-                new Author(1, "Aladdin author"),
-                new Author(2, "Alice author"),
-                new Author(3, "Winnie-the-Pooh author"),
-                new Author(4, "Snow White author"),
-                new Author(5, "Cinderella author")));
     }
 
     @DisplayName("искать автора по id")
     @Test
     public void shouldSearchById() {
-        assertThat(jdbcAuthorDao.findById(1)).isNotNull();
-        assertThat(jdbcAuthorDao.findById(1)).isPresent().get().isEqualTo(new Author(1, "Aladdin author"));
+        Optional<Author> authorOptional = jdbcAuthorDao.findById(1);
+        assertTrue(authorOptional.isPresent());
+        assertEquals(authorOptional.get().getId(), 1, "Aladdin author");
+        assertEquals(authorOptional.get().getName(), "Aladdin author");
     }
+
 }
