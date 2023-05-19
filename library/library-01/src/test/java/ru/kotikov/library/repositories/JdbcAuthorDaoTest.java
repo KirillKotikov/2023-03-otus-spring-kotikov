@@ -1,4 +1,4 @@
-package ru.kotikov.library.dao;
+package ru.kotikov.library.repositories;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

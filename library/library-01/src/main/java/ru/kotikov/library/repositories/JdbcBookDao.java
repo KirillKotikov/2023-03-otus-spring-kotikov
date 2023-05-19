@@ -1,4 +1,4 @@
-package ru.kotikov.library.dao;
+package ru.kotikov.library.repositories;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
