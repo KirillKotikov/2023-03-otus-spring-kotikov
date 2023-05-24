@@ -14,6 +14,8 @@ import ru.kotikov.library.services.CommentService;
 import ru.kotikov.library.services.GenreService;
 import ru.kotikov.library.utils.ModelMapper;
 
+import java.util.List;
+
 @ShellComponent
 public class ShellCommands {
 
@@ -40,11 +42,8 @@ public class ShellCommands {
 
     @ShellMethod(value = "Вывод списка всех книг.", key = {"show-all-books", "sab"})
     public String showAllBooks() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Book book : bookService.getAllBooks()) {
-            stringBuilder.append(ModelMapper.mapModelToString(book)).append("\n");
-        }
-        return stringBuilder.toString();
+        List<Book> allBooks = bookService.getAllBooks();
+        return ModelMapper.formatBooks(allBooks);
     }
 
     @ShellMethod(value = "Добавление книги. Пример: add-book <'book name'> <authorId> <genreId> ",
@@ -93,15 +92,6 @@ public class ShellCommands {
         StringBuilder stringBuilder = new StringBuilder();
         for (Genre genre : genreService.getAllGenres()) {
             stringBuilder.append(ModelMapper.mapModelToString(genre)).append("\n");
-        }
-        return stringBuilder.toString();
-    }
-
-    @ShellMethod(value = "Вывод списка всех комментариев.", key = {"show-all-comments", "sac"})
-    public String showAllComments() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Comment comment : commentService.getAllComments()) {
-            stringBuilder.append(ModelMapper.mapModelToString(comment)).append("\n");
         }
         return stringBuilder.toString();
     }

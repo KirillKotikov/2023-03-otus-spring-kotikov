@@ -5,6 +5,8 @@ import ru.kotikov.library.models.Book;
 import ru.kotikov.library.models.Comment;
 import ru.kotikov.library.models.Genre;
 
+import java.util.List;
+
 public class ModelMapper {
 
     public static String mapModelToString(Object model) {
@@ -21,5 +23,13 @@ public class ModelMapper {
         } else {
             return null;
         }
+    }
+
+    public static String formatBooks(List<Book> allBooks) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Book book : allBooks) {
+            stringBuilder.append(ModelMapper.mapModelToString(book)).append("\n");
+        }
+        return stringBuilder.toString();
     }
 }

@@ -12,7 +12,6 @@ import ru.kotikov.library.repositories.BookRepository;
 import ru.kotikov.library.repositories.GenreRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -45,21 +44,20 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book addBook(String name, long authorId, long genreId) {
-        Author author = authorRepository.findById(authorId).orElseThrow(()
-                -> new DataNotFoundException(String.format(ExceptionMessages.AUTHOR_NOT_FOUND, authorId)));
-        Genre genre = genreRepository.findById(genreId).orElseThrow(()
-                -> new DataNotFoundException(String.format(ExceptionMessages.GENRE_NOT_FOUND, genreId)));
+        Author author = authorRepository.findById(authorId)
+                .orElseThrow(() -> new DataNotFoundException(
+                        String.format(ExceptionMessages.AUTHOR_NOT_FOUND, authorId)));
+        Genre genre = genreRepository.findById(genreId)
+                .orElseThrow(() -> new DataNotFoundException(
+                        String.format(ExceptionMessages.GENRE_NOT_FOUND, genreId)));
         return bookRepository.save(new Book(name, author, genre));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Book getBookById(long id) {
-        Optional<Book> resultBook = bookRepository.findById(id);
-        if (resultBook.isEmpty()) {
-            throw new DataNotFoundException(String.format(ExceptionMessages.BOOK_NOT_FOUND, id));
-        }
-        return resultBook.get();
+        return bookRepository.findById(id).orElseThrow(() -> new DataNotFoundException(
+                String.format(ExceptionMessages.BOOK_NOT_FOUND, id)));
     }
 
     @Override
@@ -75,7 +73,7 @@ public class BookServiceImpl implements BookService {
         bookForUpdate.setGenre(genre);
         bookForUpdate.setName(name);
         return bookRepository.save(bookForUpdate);
-}
+    }
 
     @Override
     @Transactional

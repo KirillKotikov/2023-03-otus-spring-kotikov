@@ -19,13 +19,6 @@ public class CommentServiceImpl implements CommentService {
         this.commentRepository = commentRepository;
     }
 
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Comment> getAllComments() {
-        return commentRepository.findAll();
-    }
-
     @Override
     @Transactional(readOnly = true)
     public List<Comment> getByBook(Book book) {
