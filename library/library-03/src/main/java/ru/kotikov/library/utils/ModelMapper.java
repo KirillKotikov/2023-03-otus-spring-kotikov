@@ -18,11 +18,16 @@ public class ModelMapper {
         } else if (model instanceof Genre genre) {
             return "- id = " + genre.getId() + ", название жанра = " + genre.getName();
         } else if (model instanceof Comment comment) {
-            return "- id = " + comment.getId() + ", текст комментария = " + comment.getText()
-                    + ", оставлен для книги = " + comment.getBook().getName();
+            return "- id = " + comment.getId() + ", текст комментария = " + comment.getText();
         } else {
             return null;
         }
+    }
+
+    public static String mapCommentToString(Comment comment, String bookName) {
+            return "- id = " + comment.getId() + ", текст комментария = " + comment.getText()
+                    + ", оставлен для книги = " + bookName;
+
     }
 
     public static String formatBooks(List<Book> allBooks) {

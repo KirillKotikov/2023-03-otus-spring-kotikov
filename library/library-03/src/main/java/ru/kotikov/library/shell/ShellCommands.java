@@ -110,10 +110,9 @@ public class ShellCommands {
     @ShellMethod(value = "Добавление комментария. Пример: add-comment <bookId> <'text'> ",
             key = {"add-comment", "ac"})
     public String addComment(@ShellOption long bookId, @ShellOption String text) {
-        Book book;
-            book = bookService.getBookById(bookId);
+        Book book = bookService.getBookById(bookId);
         Comment comment = commentService.addComment(new Comment(text, book));
-        return "Комментарий {" + ModelMapper.mapModelToString(comment) + "} успешно добавлен!";
+        return "Комментарий {" + ModelMapper.mapCommentToString(comment, book.getName()) + "} успешно добавлен!";
     }
 
     @ShellMethod(value = "Обновление комментария. Пример: edit-comment <commentId> <'text'> ",
