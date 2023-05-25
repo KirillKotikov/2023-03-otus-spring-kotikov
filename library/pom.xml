@@ -23,6 +23,7 @@
     <modules>
         <module>library-01</module>
         <module>library-02</module>
+        <module>library-03</module>
     </modules>
 
     <dependencies>
