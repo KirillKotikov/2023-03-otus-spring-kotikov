@@ -8,32 +8,32 @@ import ru.kotikov.library.models.Genre;
 import java.util.List;
 
 public class ModelMapper {
+    public static String mapAuthorToString(Author author) {
+        return "- id = " + author.getId() + ", имя автора = " + author.getName();
+    }
 
-    public static String mapModelToString(Object model) {
-        if (model instanceof Author author) {
-            return "- id = " + author.getId() + ", имя автора = " + author.getName();
-        } else if (model instanceof Book book) {
-            return "- id = " + book.getId() + ", название книги = " + book.getName() +
-                    ", автор = " + book.getAuthor().getName() + ", жанр = " + book.getGenre().getName();
-        } else if (model instanceof Genre genre) {
-            return "- id = " + genre.getId() + ", название жанра = " + genre.getName();
-        } else if (model instanceof Comment comment) {
-            return "- id = " + comment.getId() + ", текст комментария = " + comment.getText();
-        } else {
-            return null;
-        }
+    public static String mapBookToString(Book book) {
+        return "- id = " + book.getId() + ", название книги = " + book.getName() +
+                ", автор = " + book.getAuthor().getName() + ", жанр = " + book.getGenre().getName();
+    }
+
+    public static String mapGenreToString(Genre genre) {
+        return "- id = " + genre.getId() + ", название жанра = " + genre.getName();
+    }
+
+    public static String mapCommentToString(Comment comment) {
+        return "- id = " + comment.getId() + ", текст комментария = " + comment.getText();
     }
 
     public static String mapCommentToString(Comment comment, String bookName) {
-            return "- id = " + comment.getId() + ", текст комментария = " + comment.getText()
-                    + ", оставлен для книги = " + bookName;
-
+        return "- id = " + comment.getId() + ", текст комментария = " + comment.getText()
+                + ", оставлен для книги = " + bookName;
     }
 
     public static String formatBooks(List<Book> allBooks) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Book book : allBooks) {
-            stringBuilder.append(ModelMapper.mapModelToString(book)).append("\n");
+            stringBuilder.append(ModelMapper.mapBookToString(book)).append("\n");
         }
         return stringBuilder.toString();
     }

@@ -50,25 +50,23 @@ public class ShellCommands {
             key = {"add-book", "ab"})
     public String addBook(@ShellOption String bookName, @ShellOption long authorId, @ShellOption long genreId) {
         Book savedBook;
-            savedBook = bookService.addBook(bookName, authorId, genreId);
-        return "Книга {" + ModelMapper.mapModelToString(savedBook) + "} успешно сохранена!";
+        savedBook = bookService.addBook(bookName, authorId, genreId);
+        return "Книга {" + ModelMapper.mapBookToString(savedBook) + "} успешно сохранена!";
     }
 
     @ShellMethod(value = "Поиск книги по id. Пример: get-book-by-id <bookId> ", key = {"get-book-by-id", "gbbi"})
     @Transactional(readOnly = true)
     public String getBookById(@ShellOption long bookId) {
-        Book bookById;
-            bookById = bookService.getBookById(bookId);
-        return ModelMapper.mapModelToString(bookById);
+        Book bookById = bookService.getBookById(bookId);
+        return ModelMapper.mapBookToString(bookById);
     }
 
     @ShellMethod(value = "Обновление книги. Пример: update-book <bookId> <'book name'> <authorId> <genreId> ",
             key = {"update-book", "ub"})
     public String updateBook(@ShellOption long bookId, @ShellOption String bookName,
                              @ShellOption long authorId, @ShellOption long genreId) {
-        Book updatedBook;
-            updatedBook = bookService.updateBook(bookId, bookName, authorId, genreId);
-        return "Обновлённая книга: " + ModelMapper.mapModelToString(updatedBook);
+        Book updatedBook = bookService.updateBook(bookId, bookName, authorId, genreId);
+        return "Обновлённая книга: " + ModelMapper.mapBookToString(updatedBook);
     }
 
     @ShellMethod(value = "Удаление книги по id. Пример: delete-book-by-id <bookId> ",
@@ -82,7 +80,7 @@ public class ShellCommands {
     public String showAllAuthors() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Author author : authorService.getAllAuthors()) {
-            stringBuilder.append(ModelMapper.mapModelToString(author)).append("\n");
+            stringBuilder.append(ModelMapper.mapAuthorToString(author)).append("\n");
         }
         return stringBuilder.toString();
     }
@@ -91,7 +89,7 @@ public class ShellCommands {
     public String showAllGenres() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Genre genre : genreService.getAllGenres()) {
-            stringBuilder.append(ModelMapper.mapModelToString(genre)).append("\n");
+            stringBuilder.append(ModelMapper.mapGenreToString(genre)).append("\n");
         }
         return stringBuilder.toString();
     }
@@ -102,7 +100,7 @@ public class ShellCommands {
         StringBuilder stringBuilder = new StringBuilder();
         Book bookById = bookService.getBookById(bookId);
         for (Comment comment : commentService.getByBook(bookById)) {
-            stringBuilder.append(ModelMapper.mapModelToString(comment)).append("\n");
+            stringBuilder.append(ModelMapper.mapCommentToString(comment)).append("\n");
         }
         return stringBuilder.toString();
     }
@@ -119,14 +117,14 @@ public class ShellCommands {
             key = {"edit-comment", "ec"})
     public String editComment(@ShellOption long commentId, @ShellOption String text) {
         Comment editedComment = commentService.updateCommentText(commentId, text);
-        return "Обновлённый комментарий: " + ModelMapper.mapModelToString(editedComment);
+        return "Обновлённый комментарий: " + ModelMapper.mapCommentToString(editedComment);
     }
 
     @ShellMethod(value = "Поиск комментария по id. Пример: get-comment-by-id <commentId> ",
             key = {"get-comment-by-id", "gcbi"})
     public String getCommentById(@ShellOption long commentId) {
         Comment commentById = commentService.getById(commentId);
-        return ModelMapper.mapModelToString(commentById);
+        return ModelMapper.mapCommentToString(commentById);
     }
 
     @ShellMethod(value = "Удаление комментария по id. Пример: delete-comment-by-id <commentId> ",

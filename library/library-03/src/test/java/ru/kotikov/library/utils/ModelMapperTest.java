@@ -17,7 +17,7 @@ public class ModelMapperTest {
     @DisplayName(" мапить автора")
     @Test
     public void shouldMappingAuthor() {
-        String mappedAuthorToString = ModelMapper.mapModelToString(author);
+        String mappedAuthorToString = ModelMapper.mapAuthorToString(author);
         assertThat(mappedAuthorToString)
                 .isEqualTo("- id = " + author.getId() + ", имя автора = " + author.getName());
     }
@@ -26,7 +26,7 @@ public class ModelMapperTest {
     @Test
     public void shouldMappingBook() {
         Book book = new Book(1, "book", author, genre);
-        String mappedBookToString = ModelMapper.mapModelToString(book);
+        String mappedBookToString = ModelMapper.mapBookToString(book);
         assertThat(mappedBookToString)
                 .isEqualTo("- id = " + book.getId() + ", название книги = " + book.getName() +
                         ", автор = " + book.getAuthor().getName() + ", жанр = " + book.getGenre().getName());
@@ -35,7 +35,7 @@ public class ModelMapperTest {
     @DisplayName(" мапить жанр")
     @Test
     public void shouldMappingGenre() {
-        String mappedGenreToString = ModelMapper.mapModelToString(genre);
+        String mappedGenreToString = ModelMapper.mapGenreToString(genre);
         assertThat(mappedGenreToString)
                 .isEqualTo("- id = " + genre.getId() + ", название жанра = " + genre.getName());
     }
