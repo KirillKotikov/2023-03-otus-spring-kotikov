@@ -24,6 +24,7 @@
         <module>library-01</module>
         <module>library-02</module>
         <module>library-03</module>
+        <module>library-04</module>
     </modules>
 
     <dependencies>
@@ -45,10 +46,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
         </dependency>
     </dependencies>
     <build>
