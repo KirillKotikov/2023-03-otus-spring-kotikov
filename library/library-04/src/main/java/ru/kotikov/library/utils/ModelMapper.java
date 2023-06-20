@@ -26,7 +26,7 @@ public class ModelMapper {
 
     public static String mapCommentToString(Comment comment, String bookName) {
             return "- id = " + comment.getId() + ", текст комментария = " + comment.getText()
-                    + ", оставлен для книги = " + bookName;
+                    + ", оставлен для книги c id = " + bookName;
 
     }
 

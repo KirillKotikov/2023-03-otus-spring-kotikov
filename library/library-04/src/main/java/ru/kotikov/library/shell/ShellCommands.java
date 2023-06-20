@@ -50,7 +50,7 @@ public class ShellCommands {
             key = {"add-book", "ab"})
     public String addBook(@ShellOption String bookName, @ShellOption String authorId, @ShellOption String genreId) {
         Book savedBook;
-            savedBook = bookService.addBook(bookName, authorId, genreId);
+        savedBook = bookService.addBook(bookName, authorId, genreId);
         return "Книга {" + ModelMapper.mapModelToString(savedBook) + "} успешно сохранена!";
     }
 
@@ -58,7 +58,7 @@ public class ShellCommands {
     @Transactional(readOnly = true)
     public String getBookById(@ShellOption String bookId) {
         Book bookById;
-            bookById = bookService.getBookById(bookId);
+        bookById = bookService.getBookById(bookId);
         return ModelMapper.mapModelToString(bookById);
     }
 
@@ -67,7 +67,7 @@ public class ShellCommands {
     public String updateBook(@ShellOption String bookId, @ShellOption String bookName,
                              @ShellOption String authorId, @ShellOption String genreId) {
         Book updatedBook;
-            updatedBook = bookService.updateBook(bookId, bookName, authorId, genreId);
+        updatedBook = bookService.updateBook(bookId, bookName, authorId, genreId);
         return "Обновлённая книга: " + ModelMapper.mapModelToString(updatedBook);
     }
 
@@ -110,9 +110,8 @@ public class ShellCommands {
     @ShellMethod(value = "Добавление комментария. Пример: add-comment <bookId> <'text'> ",
             key = {"add-comment", "ac"})
     public String addComment(@ShellOption String bookId, @ShellOption String text) {
-        Book book = bookService.getBookById(bookId);
-        Comment comment = commentService.addComment(new Comment(text, book));
-        return "Комментарий {" + ModelMapper.mapCommentToString(comment, book.getName()) + "} успешно добавлен!";
+        Comment comment = commentService.addComment(bookId, text);
+        return "Комментарий {" + ModelMapper.mapCommentToString(comment, bookId) + "} успешно добавлен!";
     }
 
     @ShellMethod(value = "Обновление комментария. Пример: edit-comment <commentId> <'text'> ",

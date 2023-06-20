@@ -6,6 +6,7 @@ import ru.kotikov.library.Exceptions.DataNotFoundException;
 import ru.kotikov.library.constants.ExceptionMessages;
 import ru.kotikov.library.models.Book;
 import ru.kotikov.library.models.Comment;
+import ru.kotikov.library.repositories.BookRepository;
 import ru.kotikov.library.repositories.CommentRepository;
 
 import java.util.List;
@@ -15,8 +16,11 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    private final BookRepository bookRepository;
+
+    public CommentServiceImpl(CommentRepository commentRepository, BookRepository bookRepository) {
         this.commentRepository = commentRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Override
@@ -27,8 +31,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public Comment addComment(Comment comment) {
-        return commentRepository.save(comment);
+    public Comment addComment(String bookId, String text) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new DataNotFoundException(
+                String.format(ExceptionMessages.BOOK_NOT_FOUND, bookId)));
+        return commentRepository.save(new Comment(text, book));
     }
 
     @Override

@@ -9,6 +9,7 @@ import ru.kotikov.library.models.Book;
 import ru.kotikov.library.models.Genre;
 import ru.kotikov.library.repositories.AuthorRepository;
 import ru.kotikov.library.repositories.BookRepository;
+import ru.kotikov.library.repositories.CommentRepository;
 import ru.kotikov.library.repositories.GenreRepository;
 
 import java.util.List;
@@ -21,11 +22,14 @@ public class BookServiceImpl implements BookService {
 
     private final GenreRepository genreRepository;
 
+    private final CommentRepository commentRepository;
+
     public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository,
-                           GenreRepository genreRepository) {
+                           GenreRepository genreRepository, CommentRepository commentRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -79,6 +83,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void deleteBookById(String id) {
+        commentRepository.deleteByBookId(id);
         bookRepository.deleteById(id);
     }
 }

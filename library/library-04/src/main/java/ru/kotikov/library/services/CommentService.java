@@ -9,7 +9,7 @@ public interface CommentService {
 
     List<Comment> getByBook(Book book);
 
-    Comment addComment(Comment comment);
+    Comment addComment(String bookId, String text);
 
     Comment updateCommentText(String commentId, String text);
 
