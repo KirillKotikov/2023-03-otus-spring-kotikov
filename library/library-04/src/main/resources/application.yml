@@ -1,0 +1,30 @@
+spring:
+  data:
+    mongodb:
+      port: 0
+      database: otus
+
+  shell:
+    interactive:
+      enabled: true
+    noninteractive:
+      enabled: false
+    command:
+      version:
+        enabled: false
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.kotikov.library.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
