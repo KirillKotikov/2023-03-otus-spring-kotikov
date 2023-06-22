@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="edit-form" action="edit.html" th:action="@{/edit}" th:method="post" th:object="${book}">
+    <h3>Информация о книге:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" name="id" th:value="*{id}" placeholder="id"/>
+    </div>
+
+    <div class="row">
+        <label for="book-name-input">Название:</label>
+        <input id="book-name-input" name="name" type="text" th:value="*{name}" placeholder="Book name"/>
+    </div>
+
+    <div class="row">
+        <label for="book-author-id-input">id автора:</label>
+        <input id="book-author-id-input" name="authorId" type="text" th:value="*{authorId}" placeholder="author id"/>
+    </div>
+
+    <div class="row">
+        <label for="book-genre-id-input">id жанра:</label>
+        <input id="book-genre-id-input" name="genreId" type="text" th:value="*{genreId}" placeholder="genre id"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Сохранить</button>
+        <a href="allBooks.html" th:href="@{/}"><button type="button">Отменить</button></a>
+    </div>
+</form>
+
+</body>
+</html>

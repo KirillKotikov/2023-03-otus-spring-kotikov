@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Информация о книге</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .book {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .book tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .book td:last-child, td:first-child {
+            width: 50px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+</head>
+<body>
+
+<h3 >Книга:</h3>
+
+<table class="book">
+    <thead>
+    <tr>
+        <th >ID</th>
+        <th >Название</th>
+        <th >Автор (id)</th>
+        <th >Жанр (id)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:object="${book}">
+        <td th:text="${book.id}">1</td>
+        <td th:text="${book.name}">Book name</td>
+        <td th:text="${book.authorName} + ' (' + ${book.authorId} + ')'"></td>
+        <td th:text="${book.genreName}+ ' (' + ${book.genreId} + ')'"></td>
+        <td>
+            <a th:href="@{/edit(id=${book.id})}" href="edit.html">Редактировать</a>
+        </td>
+    </tr>
+    </tbody>
+</table><br/>
+<h4 >Комментарии к книге:</h4>
+
+<table class="comments">
+    <thead>
+    <tr>
+        <th >Текст комментария</th>
+        <th >Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}">
+        <td th:text="${comment.text}"></td>
+        <td>
+            <a th:href="@{/comment/delete(commentId=${comment.id},bookId=${book.id})}">Удалить</a>
+        </td>
+    </tr>
+    </tbody>
+</table><br/>
+<form id="add-comment-form" th:action="@{/comment/add(bookId=${book.id})}" th:method="post">
+    <h3>Добавление комментария:</h3>
+    <div class="row">
+        <input id="id-input" type="textarea" name="text" required="true"/>
+        <button type="submit">Добавить комментарий</button>
+    </div>
+</form><br/>
+<a href="allBooks.html" th:href="@{/}"><button type="button">Назад</button></a>
+</body>
+</html>
