@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kotikov.library.dtos.BookDto;
@@ -23,50 +24,49 @@ public class BookController {
 
     private final CommentService commentService;
 
-    @GetMapping("/")
+    @GetMapping("/api/book")
     public String getAll(Model model) {
         List<BookDto> books = bookService.getAllBooks();
         model.addAttribute("books", books);
         return "allBooks";
     }
 
-    @GetMapping("/get-by-id")
+    @GetMapping("/api/book/")
     public String getById(@Valid @ModelAttribute("id") String id, Model model) {
         BookDto book = bookService.getBookById(id);
-        List<CommentDto> commentDtos = commentService.getByBookId(id);
+        List<CommentDto> comments = commentService.getByBookId(id);
         model.addAttribute("book", book);
-        model.addAttribute("comments", commentDtos);
+        model.addAttribute("comments", comments);
         return "showBook";
     }
 
-    @GetMapping("/add")
-    public String add() {
-        return "add";
+    @GetMapping("/api/book/addingPage")
+    public String addingPage() {
+        return "addingPage";
     }
 
-    @GetMapping("/edit")
-    public String editPage(@RequestParam("id") String id, Model model) {
+    @GetMapping("/api/book/editPage/{id}")
+    public String editPage(@PathVariable("id") String id, Model model) {
         BookDto book = bookService.getBookById(id);
         model.addAttribute("book", book);
-        return "edit";
+        return "editPage";
     }
 
-    @PostMapping("/edit")
-    public String save(@Valid @ModelAttribute("book") BookDto bookDto) {
-        System.out.println("bookDto = " + bookDto);
+    @PostMapping("/api/book")
+    public String saveBook(@Valid @ModelAttribute("book") BookDto bookDto) {
         bookService.saveBook(bookDto.getId(), bookDto.getName(), bookDto.getAuthorId(), bookDto.getGenreId());
-        return "redirect:/";
+        return "redirect:/api/book";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/api/book/delete") // как я понял thymeleaf поддерживает только get и post запросы
     public String deleteBook(@Valid @ModelAttribute("id") String id) {
         bookService.deleteBookById(id);
-        return "redirect:/";
+        return "redirect:/api/book";
     }
 
-    @GetMapping("/comment/delete")
+    @PostMapping("/api/book/{bookId}/comment/delete")
     public String deleteComment(@RequestParam(value = "commentId") String commentId,
-                                @RequestParam(value = "bookId") String bookId, Model model) {
+                                @PathVariable(value = "bookId") String bookId, Model model) {
         commentService.deleteById(commentId);
         List<CommentDto> comments = commentService.getByBookId(bookId);
         BookDto book = bookService.getBookById(bookId);
@@ -75,9 +75,9 @@ public class BookController {
         return "showBook";
     }
 
-    @PostMapping("/comment/add")
-    public String addComment(@Valid @ModelAttribute("text") String text,
-                             @RequestParam("bookId") String bookId, Model model) {
+    @PostMapping("/api/book/{bookId}/comment")
+    public String saveComment(@Valid @ModelAttribute("text") String text,
+                             @PathVariable("bookId") String bookId, Model model) {
         commentService.addComment(bookId, text);
         return getById(bookId, model);
     }

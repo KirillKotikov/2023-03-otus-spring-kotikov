@@ -62,12 +62,12 @@
         <td th:text="${book.authorName} + ' (' + ${book.authorId} + ')'">Author name</td>
         <td th:text="${book.genreName}+ ' (' + ${book.genreId} + ')'">Genre</td>
         <td>
-            <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
+            <a th:href="@{/api/book/editPage/}+${book.id}" href="editPage.html">Edit</a>
         </td>
     </tr>
     </tbody>
 </table>
-<form id="show-book-form" action="showBook.html" th:action="@{/get-by-id}" th:method="get">
+<form id="show-book-form" action="showBook.html" th:action="@{/api/book/}" th:method="get">
     <h3>Поиск книги по id:</h3>
     <div class="row">
         <label for="id-input">ID:</label>
@@ -76,9 +76,9 @@
     </div>
 </form><br/>
 
-<a href="add.html" th:href="@{/add}"><button type="button">Добавить книгу</button></a><br/>
+<a href="addingPage.html" th:href="@{/api/book/addingPage}"><button type="button">Добавить книгу</button></a><br/>
 
-<form id="delete-book-form" th:action="@{/delete}" th:method="post">
+<form id="delete-book-form" th:action="@{/api/book/delete}" th:method="post">
     <h3>Удаление книги по id:</h3>
     <div class="row">
         <label for="id-input-delete">ID:</label>

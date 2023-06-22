@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Add book</title>
+    <title>Edit book</title>
     <style type="text/css">
         body {
             padding: 50px;
@@ -44,27 +44,32 @@
 </head>
 <body>
 
-<form id="edit-form" action="edit.html" th:action="@{/edit}" th:method="post">
+<form id="edit-form" action="editPage.html" th:action="@{/api/book}" th:method="post" th:object="${book}">
     <h3>Информация о книге:</h3>
 
     <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" name="id" th:value="*{id}" placeholder="id"/>
+    </div>
+
+    <div class="row">
         <label for="book-name-input">Название:</label>
-        <input id="book-name-input" name="name" type="text" required="true" placeholder="Book name"/>
+        <input id="book-name-input" name="name" type="text" th:value="*{name}" placeholder="Book name"/>
     </div>
 
     <div class="row">
         <label for="book-author-id-input">id автора:</label>
-        <input id="book-author-id-input" name="authorId" type="text" required="true" placeholder="author id"/>
+        <input id="book-author-id-input" name="authorId" type="text" th:value="*{authorId}" placeholder="author id"/>
     </div>
 
     <div class="row">
         <label for="book-genre-id-input">id жанра:</label>
-        <input id="book-genre-id-input" name="genreId" type="text" required="true" placeholder="genre id"/>
+        <input id="book-genre-id-input" name="genreId" type="text" th:value="*{genreId}" placeholder="genre id"/>
     </div>
 
     <div class="row">
         <button type="submit">Сохранить</button>
-        <a href="allBooks.html" th:href="@{/}"><button type="button">Отменить</button></a>
+        <a href="allBooks.html" th:href="@{/api/book}"><button type="button">Отменить</button></a>
     </div>
 </form>
 

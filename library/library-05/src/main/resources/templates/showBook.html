@@ -62,7 +62,7 @@
         <td th:text="${book.authorName} + ' (' + ${book.authorId} + ')'"></td>
         <td th:text="${book.genreName}+ ' (' + ${book.genreId} + ')'"></td>
         <td>
-            <a th:href="@{/edit(id=${book.id})}" href="edit.html">Редактировать</a>
+            <a th:href="@{/api/book/editPage/}+${book.id}" href="editPage.html">Редактировать</a>
         </td>
     </tr>
     </tbody>
@@ -80,18 +80,20 @@
     <tr th:each="comment : ${comments}">
         <td th:text="${comment.text}"></td>
         <td>
-            <a th:href="@{/comment/delete(commentId=${comment.id},bookId=${book.id})}">Удалить</a>
+            <form id="delete-comment-form" th:action="@{/api/book/} + ${book.id} + @{/comment/delete(commentId=${comment.id})}" th:method="post">
+                <button type="submit">Удалить</button>
+            </form>
         </td>
     </tr>
     </tbody>
 </table><br/>
-<form id="add-comment-form" th:action="@{/comment/add(bookId=${book.id})}" th:method="post">
+<form id="add-comment-form" th:action="@{/api/book/} + ${book.id} + @{/comment}" th:method="post">
     <h3>Добавление комментария:</h3>
     <div class="row">
         <input id="id-input" type="textarea" name="text" required="true"/>
         <button type="submit">Добавить комментарий</button>
     </div>
 </form><br/>
-<a href="allBooks.html" th:href="@{/}"><button type="button">Назад</button></a>
+<a href="allBooks.html" th:href="@{/api/book}"><button type="button">Назад</button></a>
 </body>
 </html>

@@ -37,7 +37,7 @@ public class BookControllerTest {
     @Test
     @DisplayName("получать список книг")
     void shouldGetAllReturnOk() throws Exception {
-        mvc.perform(get("/"))
+        mvc.perform(get("/api/book"))
                 .andExpect(status().isOk());
     }
 
@@ -46,14 +46,14 @@ public class BookControllerTest {
     void shouldGetByIdReturnOk() throws Exception {
         given(bookService.getBookById("1")).willReturn(new BookDto(null, "Name", "1",
                 null, "2", null));
-        mvc.perform(get("/get-by-id").param("id", "1"))
+        mvc.perform(get("/api/book/").param("id", "1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("добавлять книгу")
     void shouldAddReturnOk() throws Exception {
-        mvc.perform(get("/add"))
+        mvc.perform(get("/api/book/addingPage"))
                 .andExpect(status().isOk());
     }
 
@@ -62,7 +62,7 @@ public class BookControllerTest {
     void shouldEditPageReturnOk() throws Exception {
         given(bookService.getBookById("1")).willReturn(new BookDto(null, "Name", "1",
                 null, "2", null));
-        mvc.perform(get("/edit?id=1"))
+        mvc.perform(get("/api/book/editPage/1"))
                 .andExpect(status().isOk());
     }
 
@@ -72,7 +72,7 @@ public class BookControllerTest {
         given(bookService.saveBook(null, "Name", "1",
                 "2")).willReturn(new BookDto(null, "Name", "1",
                 null, "2", null));
-        mvc.perform(post("/edit")
+        mvc.perform(post("/api/book")
                         .requestAttr("book",
                                 new BookDto(null, "Name", "1",
                                         null, "2", null)))
@@ -82,7 +82,7 @@ public class BookControllerTest {
     @Test
     @DisplayName("удалять книгу")
     void shouldDeleteBookReturnRedirect() throws Exception {
-        mvc.perform(post("/delete").param("id", "1"))
+        mvc.perform(post("/api/book/delete").param("id", "1"))
                 .andExpect(status().is3xxRedirection());
     }
 
@@ -92,7 +92,7 @@ public class BookControllerTest {
         given(commentService.getByBookId("1")).willReturn(new ArrayList<>());
         given(bookService.getBookById("1")).willReturn(new BookDto(null, "Name", "1",
                 null, "2", null));
-        mvc.perform(get("/comment/delete?commentId=1&bookId=1"))
+        mvc.perform(post("/api/book/1/comment/delete?commentId=1"))
                 .andExpect(status().isOk());
     }
 
@@ -102,7 +102,7 @@ public class BookControllerTest {
         given(bookService.getBookById("1")).willReturn(new BookDto(null, "Name", "1",
                 null, "2", null));
         given(commentService.getByBookId("1")).willReturn(new ArrayList<>());
-        mvc.perform(post("/comment/add?bookId=1")
+        mvc.perform(post("/api/book/1/comment")
                         .requestAttr("text", "text"))
                 .andExpect(status().isOk());
     }
