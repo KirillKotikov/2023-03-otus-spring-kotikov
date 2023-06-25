@@ -2,3 +2,4 @@
 * library-02: высокоуровневое приложение с JPA-маппингом сущностей (JPA + Hibernate)
 * library-03: приложение со слоем репозиториев на Spring Data JPA
 * library-04: приложение с использованием MongoDB
+* library-05: Web-приложение полностью на стеке Spring
