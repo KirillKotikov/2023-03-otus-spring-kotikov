@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kotikov.library.Exceptions.DataNotFoundException;
 import ru.kotikov.library.constants.ExceptionMessages;
 import ru.kotikov.library.dtos.BookDto;
+import ru.kotikov.library.dtos.BookWithCommentDto;
+import ru.kotikov.library.dtos.CommentDto;
 import ru.kotikov.library.models.Author;
 import ru.kotikov.library.models.Book;
 import ru.kotikov.library.models.Genre;
@@ -48,28 +50,39 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public BookWithCommentDto getBookWithCommentsByBookId(String id) {
+        BookDto bookDto = BookDto.toDto(bookRepository.findById(id).orElseThrow(() -> new DataNotFoundException(
+                String.format(ExceptionMessages.BOOK_NOT_FOUND, id))));
+        List<CommentDto> commentDtoList = commentRepository.findByBookId(id).stream().map(CommentDto::toDto).toList();
+        return new BookWithCommentDto(bookDto, commentDtoList);
+    }
+
+    @Override
     @Transactional
-    public BookDto saveBook(String id, String name, String authorId, String genreId) {
-        if (id != null) {
-            Book bookForUpdate = bookRepository.findById(id)
-                    .orElseThrow(() -> new DataNotFoundException(String.format(ExceptionMessages.BOOK_NOT_FOUND, id)));
-            Author author = authorRepository.findById(authorId).orElseThrow(()
-                    -> new DataNotFoundException(String.format(ExceptionMessages.AUTHOR_NOT_FOUND, authorId)));
+    public BookDto saveBook(BookDto bookDto) {
+        if (bookDto.getId() != null) {
+            Book bookForUpdate = bookRepository.findById(bookDto.getId())
+                    .orElseThrow(() -> new DataNotFoundException(
+                            String.format(ExceptionMessages.BOOK_NOT_FOUND, bookDto.getId())));
+            Author author = authorRepository.findById(bookDto.getAuthorId())
+                    .orElseThrow(() -> new DataNotFoundException(
+                            String.format(ExceptionMessages.AUTHOR_NOT_FOUND, bookDto.getAuthorId())));
             bookForUpdate.setAuthor(author);
-            Genre genre = genreRepository.findById(genreId)
-                    .orElseThrow(()
-                            -> new DataNotFoundException(String.format(ExceptionMessages.GENRE_NOT_FOUND, genreId)));
+            Genre genre = genreRepository.findById(bookDto.getGenreId())
+                    .orElseThrow(() -> new DataNotFoundException(
+                            String.format(ExceptionMessages.GENRE_NOT_FOUND, bookDto.getGenreId())));
             bookForUpdate.setGenre(genre);
-            bookForUpdate.setName(name);
+            bookForUpdate.setName(bookDto.getName());
             return BookDto.toDto(bookRepository.save(bookForUpdate));
         } else {
-            Author author = authorRepository.findById(authorId)
+            Author author = authorRepository.findById(bookDto.getAuthorId())
                     .orElseThrow(() -> new DataNotFoundException(
-                            String.format(ExceptionMessages.AUTHOR_NOT_FOUND, authorId)));
-            Genre genre = genreRepository.findById(genreId)
+                            String.format(ExceptionMessages.AUTHOR_NOT_FOUND, bookDto.getAuthorId())));
+            Genre genre = genreRepository.findById(bookDto.getGenreId())
                     .orElseThrow(() -> new DataNotFoundException(
-                            String.format(ExceptionMessages.GENRE_NOT_FOUND, genreId)));
-            return BookDto.toDto(bookRepository.save(new Book(name, author, genre)));
+                            String.format(ExceptionMessages.GENRE_NOT_FOUND, bookDto.getGenreId())));
+            return BookDto.toDto(bookRepository.save(new Book(bookDto.getName(), author, genre)));
         }
     }
 

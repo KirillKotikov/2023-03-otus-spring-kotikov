@@ -16,7 +16,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<GenreDto> getAllGenres() {
+    public List<GenreDto> getAll() {
         return genreRepository.findAll().stream().map(GenreDto::toDto).collect(Collectors.toList());
     }
 }

@@ -56,13 +56,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:object="${book}">
-        <td th:text="${book.id}">1</td>
-        <td th:text="${book.name}">Book name</td>
-        <td th:text="${book.authorName} + ' (' + ${book.authorId} + ')'"></td>
-        <td th:text="${book.genreName}+ ' (' + ${book.genreId} + ')'"></td>
+    <tr th:object="${bookWithCommentDto.bookDto}">
+        <td th:text="*{id}">1</td>
+        <td th:text="*{name}">Book name</td>
+        <td th:text="*{authorName} + ' (' + *{authorId} + ')'"></td>
+        <td th:text="*{genreName}+ ' (' + *{genreId} + ')'"></td>
         <td>
-            <a th:href="@{/api/book/editPage/}+${book.id}" href="editPage.html">Редактировать</a>
+            <a th:href="@{/api/book/editPage/}+*{id}" href="editPage.html">Редактировать</a>
         </td>
     </tr>
     </tbody>
@@ -77,17 +77,17 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="comment : ${comments}">
+    <tr th:each="comment : ${bookWithCommentDto.commentDtoList}">
         <td th:text="${comment.text}"></td>
         <td>
-            <form id="delete-comment-form" th:action="@{/api/book/} + ${book.id} + @{/comment/delete(commentId=${comment.id})}" th:method="post">
+            <form id="delete-comment-form" th:action="@{/api/book/} + ${bookWithCommentDto.bookDto.id} + @{/comment/delete(commentId=${comment.id})}" th:method="post">
                 <button type="submit">Удалить</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table><br/>
-<form id="add-comment-form" th:action="@{/api/book/} + ${book.id} + @{/comment}" th:method="post">
+<form id="add-comment-form" th:action="@{/api/book/} + ${bookWithCommentDto.bookDto.id} + @{/comment}" th:method="post">
     <h3>Добавление комментария:</h3>
     <div class="row">
         <input id="id-input" type="textarea" name="text" required="true"/>

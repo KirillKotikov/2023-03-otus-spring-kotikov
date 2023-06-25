@@ -11,7 +11,7 @@ public interface CommentService {
 
     List<CommentDto> getByBookId(String bookId);
 
-    CommentDto addComment(String bookId, String text);
+    CommentDto addComment(CommentDto commentDto);
 
     CommentDto updateCommentText(String commentId, String text);
 

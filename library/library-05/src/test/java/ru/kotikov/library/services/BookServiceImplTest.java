@@ -7,7 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.kotikov.library.Exceptions.DataNotFoundException;
 import ru.kotikov.library.dtos.BookDto;
-import ru.kotikov.library.models.Book;
+import ru.kotikov.library.dtos.BookWithCommentDto;
+import ru.kotikov.library.dtos.CommentDto;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +32,8 @@ public class BookServiceImplTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     public void shouldAddBook() {
-        BookDto actual = bookService.saveBook(null, "Test test", "1", "1");
+        BookDto actual = bookService.saveBook(
+                new BookDto(null, "Test test", "1", null, "1", null));
         assertEquals(actual.getName(), "Test test");
         assertEquals(actual.getAuthorId(), "1");
         assertEquals(actual.getGenreId(), "1");
@@ -39,7 +43,8 @@ public class BookServiceImplTest {
     @Test
     public void shouldThrowExceptionWhenAddedBookIfAuthorNotFound() {
         String exceptionMessage = assertThrows(DataNotFoundException.class,
-                () -> bookService.saveBook(null, "Test test", "6", "1")).getMessage();
+                () -> bookService.saveBook(new BookDto(null, "Test test", "6", null,
+                        "1", null))).getMessage();
         assertThat(exceptionMessage).isEqualTo("Автор с id = 6 в базе данных не найден!");
     }
 
@@ -47,7 +52,8 @@ public class BookServiceImplTest {
     @Test
     public void shouldThrowExceptionWhenAddedBookIfGenreNotFound() {
         String exceptionMessage = assertThrows(DataNotFoundException.class,
-                () -> bookService.saveBook(null, "Test test", "1", "6")).getMessage();
+                () -> bookService.saveBook(new BookDto(null, "Test test", "1", null,
+                        "6", null))).getMessage();
         assertThat(exceptionMessage).isEqualTo("Жанр с id = 6 в базе данных не найден!");
     }
 
@@ -60,7 +66,19 @@ public class BookServiceImplTest {
         assertEquals(bookById.getGenreId(), "2");
     }
 
-    @DisplayName("выброоить ошибку, если не нашёл книгу по id")
+    @DisplayName("найти книгу по id с комментариями")
+    @Test
+    public void shouldFoundBookByIdWithComments() {
+        BookWithCommentDto bookWithCommentDto = bookService.getBookWithCommentsByBookId("1");
+        BookDto bookDto = bookWithCommentDto.getBookDto();
+        List<CommentDto> commentDtoList = bookWithCommentDto.getCommentDtoList();
+        assertEquals(bookDto.getName(), "Aladdin");
+        assertEquals(bookDto.getAuthorId(), "1");
+        assertEquals(bookDto.getGenreId(), "2");
+        assertThat(commentDtoList).hasSize(2);
+    }
+
+    @DisplayName("выбросить ошибку, если не нашёл книгу по id")
     @Test
     public void shouldNotFoundBookById() {
         String exceptionMessage = assertThrows(DataNotFoundException.class,
@@ -72,18 +90,20 @@ public class BookServiceImplTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     public void shouldUpdateBook() {
-        bookService.saveBook("1", "Test test", "2", "2");
+        bookService.saveBook(new BookDto("1", "Test test", "2", null,
+                "2", null));
         BookDto bookById = bookService.getBookById("1");
         assertEquals(bookById.getName(), "Test test");
         assertEquals(bookById.getAuthorId(), "2");
         assertEquals(bookById.getGenreId(), "2");
     }
 
-    @DisplayName("выброоить ошибку, если не нашёл книгу по id при обновлении")
+    @DisplayName("выбросить ошибку, если не нашёл книгу по id при обновлении")
     @Test
     public void shouldThrowExceptionIfNotFoundBookByIdWhenUpdated() {
         String exceptionMessage = assertThrows(DataNotFoundException.class,
-                () -> bookService.saveBook("20", "Test test", "2", "2")).getMessage();
+                () -> bookService.saveBook(new BookDto("20", "Test test", "2",
+                        null, "2", null))).getMessage();
         assertThat(exceptionMessage).isEqualTo("Книга с id = 20 в базе данных не найдена!");
     }
 
@@ -91,7 +111,8 @@ public class BookServiceImplTest {
     @Test
     public void shouldThrowExceptionWhenUpdatedBookIfAuthorNotFound() {
         String exceptionMessage = assertThrows(DataNotFoundException.class,
-                () -> bookService.saveBook("2", "Test test", "6", "2")).getMessage();
+                () -> bookService.saveBook(new BookDto("2", "Test test", "6", null,
+                        "2", null))).getMessage();
         assertThat(exceptionMessage).isEqualTo("Автор с id = 6 в базе данных не найден!");
     }
 
@@ -99,7 +120,8 @@ public class BookServiceImplTest {
     @Test
     public void shouldThrowExceptionWhenUpdatedBookIfGenreNotFound() {
         String exceptionMessage = assertThrows(DataNotFoundException.class,
-                () -> bookService.saveBook("2", "Test test", "2", "6")).getMessage();
+                () -> bookService.saveBook(new BookDto("2", "Test test", "2", null,
+                        "6", null))).getMessage();
         assertThat(exceptionMessage).isEqualTo("Жанр с id = 6 в базе данных не найден!");
     }
 

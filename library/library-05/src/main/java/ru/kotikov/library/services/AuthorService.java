@@ -5,5 +5,5 @@ import ru.kotikov.library.dtos.AuthorDto;
 import java.util.List;
 
 public interface AuthorService {
-    List<AuthorDto> getAllAuthors();
+    List<AuthorDto> getAll();
 }

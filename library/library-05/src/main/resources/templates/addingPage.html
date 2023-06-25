@@ -53,13 +53,23 @@
     </div>
 
     <div class="row">
-        <label for="book-author-id-input">id автора:</label>
-        <input id="book-author-id-input" name="authorId" type="text" required="true" placeholder="author id"/>
+        <label for="book-author-id-input">Автор:</label>
+        <select id="book-author-id-input" name="authorId" required="true">
+            <option th:each="author : ${authors}"
+                    th:value="${author.id}"
+                    th:text="${author.name}">
+            </option>
+        </select>
     </div>
 
     <div class="row">
-        <label for="book-genre-id-input">id жанра:</label>
-        <input id="book-genre-id-input" name="genreId" type="text" required="true" placeholder="genre id"/>
+        <label for="book-genre-id-input">Жанр:</label>
+        <select id="book-genre-id-input" name="genreId" required="true">
+            <option th:each="genre : ${genres}"
+                    th:value="${genre.id}"
+                    th:text="${genre.name}">
+            </option>
+        </select>
     </div>
 
     <div class="row">

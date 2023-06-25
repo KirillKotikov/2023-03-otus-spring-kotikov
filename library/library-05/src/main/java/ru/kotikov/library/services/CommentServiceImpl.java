@@ -39,10 +39,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentDto addComment(String bookId, String text) {
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new DataNotFoundException(
-                String.format(ExceptionMessages.BOOK_NOT_FOUND, bookId)));
-        return CommentDto.toDto(commentRepository.save(new Comment(text, book)));
+    public CommentDto addComment(CommentDto commentDto) {
+        Book book = bookRepository.findById(commentDto.getBookId()).orElseThrow(() -> new DataNotFoundException(
+                String.format(ExceptionMessages.BOOK_NOT_FOUND, commentDto.getBookId())));
+        return CommentDto.toDto(commentRepository.save(new Comment(commentDto.getText(), book)));
     }
 
     @Override
