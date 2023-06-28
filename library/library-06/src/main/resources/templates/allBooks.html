@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Список всех книг</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .books {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .books tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .books td:last-child, td:first-child {
+            width: 50px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+
+<h3 >Books:</h3>
+
+<table class="books">
+    <thead>
+    <tr>
+        <th >ID</th>
+        <th >Название</th>
+        <th >Автор (id)</th>
+        <th >Жанр (id)</th>
+        <th >Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<form id="show-book-form">
+    <h3>Поиск книги по id:</h3>
+    <div class="row">
+        <label for="bookId">ID:</label>
+        <input id="bookId" type="text" name="bookId" required="true"/>
+        <button type="button" onclick="search()">Найти</button>
+    </div>
+</form>
+
+<div class="row">
+    <label hidden id="bookNameLabel" for="bookName">Название:</label>
+    <input hidden id="bookName" type="text" name="bookName" readonly/>
+
+    <label hidden id="bookAuthorLabel"  for="author">Автор (id):</label>
+    <input hidden id="author" type="text" name="author" readonly/>
+
+    <label hidden id="bookGenreLabel" for="genre">Жанр (id):</label>
+    <input hidden id="genre" type="text" name="genre" readonly/>
+</div>
+
+<a href="addingPage.html" th:href="@{/api/book/addingPage}"><button type="button">Добавить книгу</button></a><br/>
+
+<form id="delete-book-form" th:action="@{/api/book/delete}" th:method="post">
+    <h3>Удаление книги по id:</h3>
+    <div class="row">
+        <label for="id-input-delete">ID:</label>
+        <input id="id-input-delete" type="text" name="id" required="true"/>
+        <button type="button" onclick="deleteBook()">Удалить</button>
+    </div>
+</form>
+<script>
+    allBook();
+
+    function allBook() {
+        $.get('/api/book/').done(function (books) {
+            $('tbody').remove()
+            $('table').append('<tbody>')
+            books.forEach(function (book) {
+                $('tbody').append(`
+                    <tr>
+                        <td>${book.id}</td>
+                        <td>${book.name}</td>
+                        <td>${book.authorName} (${book.authorId})</td>
+                        <td>${book.genreName} (${book.genreId})</td>
+                        <td>
+                        <a href="/api/book/editPage/${book.id}">Редактировать</a>
+                        </td>
+                    </tr>
+                `)
+            });
+        })
+    }
+
+    function search() {
+        const $bookId = document.getElementById("bookId").value
+        $.ajax({
+            type: "GET",
+            url: "/api/book/" + $bookId,
+
+            success: function(book) {
+                $("#bookNameLabel").show()
+                const $bookName = $("#bookName");
+                $bookName.show()
+                $bookName.val(book.bookDto.name)
+                $("#bookAuthorLabel").show()
+                const $author = $("#author");
+                $author.show()
+                $author.val(book.bookDto.authorName + ' (' + book.bookDto.authorId + ')')
+                $("#bookGenreLabel").show()
+                const $genre = $("#genre");
+                $genre.show()
+                $genre.val(book.bookDto.genreName + ' (' + book.bookDto.genreId + ')')
+            },
+            error: function(){
+                const $bookName = $("#bookName");
+                const $author = $("#author");
+                const $genre = $("#genre");
+                    $bookName.val('')
+                    $author.val('')
+                    $genre.val('')
+                alert('Книга с id = ' + $bookId + ' не найдена!');
+            }
+        });
+    }
+
+    function deleteBook() {
+        const $bookId = document.getElementById("id-input-delete").value
+        $.ajax({
+            type: "DELETE",
+            url: "/api/book/" + $bookId,
+
+            success: function() { alert('Книга с id = ' + $bookId + ' успешно удалена!');
+                allBook()
+            },
+            error: function() { alert('Книга с id = ' + $bookId + ' не найдена!') }
+        });
+    }
+</script>
+</body>
+</html>

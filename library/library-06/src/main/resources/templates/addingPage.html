@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="edit-form" action="editPage.html" th:action="@{/api/book}" th:method="post">
+    <h3>Информация о книге:</h3>
+
+    <div class="row">
+        <label for="book-name-input">Название:</label>
+        <input id="book-name-input" name="name" type="text" required="true" placeholder="Book name"/>
+    </div>
+
+    <div class="row">
+        <label for="book-author-id-input">Автор:</label>
+        <select id="book-author-id-input" name="authorId" required="true">
+            <option th:each="author : ${authors}"
+                    th:value="${author.id}"
+                    th:text="${author.name}">
+            </option>
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="book-genre-id-input">Жанр:</label>
+        <select id="book-genre-id-input" name="genreId" required="true">
+            <option th:each="genre : ${genres}"
+                    th:value="${genre.id}"
+                    th:text="${genre.name}">
+            </option>
+        </select>
+    </div>
+
+    <div class="row">
+        <button type="button" onclick="saveBook()">Сохранить</button>
+        <a href="allBooks.html" th:href="@{/api/book}"><button type="button">Назад</button></a>
+    </div>
+</form>
+
+<h3>Сохраненная книга:</h3>
+<pre id = "saved-book"></pre>
+
+<script>
+    function saveBook() {
+        const savedBookContainer = document.getElementById("saved-book")
+        const $bookName = document.getElementById("book-name-input")
+        const $author = document.getElementById("book-author-id-input")
+        const $genre = document.getElementById("book-genre-id-input")
+        const book = {
+            name: $bookName.value,
+            authorId: $author.value,
+            genreId: $genre.value
+        }
+        fetch("/api/book", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(book)})
+            .then(rawResponse => rawResponse.json())
+            .then(json => savedBookContainer.innerHTML = JSON.stringify(json, null, 4))
+        alert('Книга успешно сохранена!');
+    }
+</script>
+
+</body>
+</html>

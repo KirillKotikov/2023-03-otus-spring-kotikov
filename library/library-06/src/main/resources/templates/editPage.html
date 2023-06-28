@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="edit-form" action="editPage.html" th:action="@{/api/book}" th:method="post" th:object="${book}">
+    <h3>Информация о книге:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" name="id" th:value="*{id}" placeholder="id"/>
+    </div>
+
+    <div class="row">
+        <label for="book-name-input">Название:</label>
+        <input id="book-name-input" name="name" type="text" th:value="*{name}" placeholder="Book name"/>
+    </div>
+
+
+    <div class="row">
+        <label for="book-author-id-input">id автора:</label>
+        <select id="book-author-id-input" name="authorId" required="true">
+            <option th:each="author : ${authors}"
+                    th:value="${author.id}"
+                    th:text="${author.name}"
+                    th:checked="${author.id} == *{authorId}">
+            </option>
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="book-genre-id-input">id жанра:</label>
+        <select id="book-genre-id-input" name="genreId" required="true">
+            <option th:each="genre : ${genres}"
+                    th:value="${genre.id}"
+                    th:text="${genre.name}"
+                    th:checked="${genre.id} == *{genreId}">
+            </option>
+        </select>
+    </div>
+
+    <div class="row">
+        <button type="button" onclick="update()">Сохранить</button>
+        <a href="allBooks.html" th:href="@{/api/book}"><button type="button">Назад</button></a>
+    </div>
+</form>
+<script>
+    function update() {
+        const $bookId = document.getElementById("id-input")
+        const $bookName = document.getElementById("book-name-input")
+        const $author = document.getElementById("book-author-id-input")
+        const $genre = document.getElementById("book-genre-id-input")
+        const book = {
+            id: $bookId.value,
+            name: $bookName.value,
+            authorId: $author.value,
+            genreId: $genre.value
+        }
+        fetch("/api/book", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(book)})
+            .catch((e) => {
+                    console.log('Error: ' + e.message);
+                    alert('Ошибка при обновлении книги!');
+                })
+        alert('Книга успешно сохранена!');
+    }
+</script>
+</body>
+</html>
