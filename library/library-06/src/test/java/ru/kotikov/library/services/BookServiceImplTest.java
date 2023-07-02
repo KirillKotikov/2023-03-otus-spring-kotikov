@@ -90,7 +90,7 @@ public class BookServiceImplTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     public void shouldUpdateBook() {
-        bookService.saveBook(new BookDto("1", "Test test", "2", null,
+        bookService.updateBook(new BookDto("1", "Test test", "2", null,
                 "2", null));
         BookDto bookById = bookService.getBookById("1");
         assertEquals(bookById.getName(), "Test test");
@@ -102,7 +102,7 @@ public class BookServiceImplTest {
     @Test
     public void shouldThrowExceptionIfNotFoundBookByIdWhenUpdated() {
         String exceptionMessage = assertThrows(DataNotFoundException.class,
-                () -> bookService.saveBook(new BookDto("20", "Test test", "2",
+                () -> bookService.updateBook(new BookDto("20", "Test test", "2",
                         null, "2", null))).getMessage();
         assertThat(exceptionMessage).isEqualTo("Книга с id = 20 в базе данных не найдена!");
     }
