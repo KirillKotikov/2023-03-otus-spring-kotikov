@@ -1,5 +1,6 @@
 package ru.kotikov.library.services;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.kotikov.library.dtos.BookDto;
 import ru.kotikov.library.dtos.BookWithCommentDto;
 
@@ -13,6 +14,9 @@ public interface BookService {
     BookDto getBookById(String id);
 
     BookDto saveBook(BookDto bookDto);
+
+    @Transactional
+    BookDto updateBook(BookDto bookDto);
 
     void deleteBookById(String id);
 }

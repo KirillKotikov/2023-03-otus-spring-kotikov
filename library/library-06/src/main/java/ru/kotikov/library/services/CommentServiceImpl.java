@@ -29,18 +29,22 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     public List<CommentDto> getByBook(Book book) {
         return commentRepository.findByBook(book).stream()
-                .map(CommentDto::toDto).collect(Collectors.toList());
+                .map(CommentDto::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<CommentDto> getByBookId(String bookId) {
-        return commentRepository.findByBookId(bookId).stream().map(CommentDto::toDto).collect(Collectors.toList());
+        return commentRepository.findByBookId(bookId).stream()
+                .map(CommentDto::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public CommentDto addComment(CommentDto commentDto) {
-        Book book = bookRepository.findById(commentDto.getBookId()).orElseThrow(() -> new DataNotFoundException(
+        Book book = bookRepository.findById(commentDto.getBookId())
+                .orElseThrow(() -> new DataNotFoundException(
                 String.format(ExceptionMessages.BOOK_NOT_FOUND, commentDto.getBookId())));
         return CommentDto.toDto(commentRepository.save(new Comment(commentDto.getText(), book)));
     }

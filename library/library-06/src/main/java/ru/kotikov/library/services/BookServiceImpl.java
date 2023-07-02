@@ -39,51 +39,57 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public List<BookDto> getAllBooks() {
-        return bookRepository.findAll().stream().map(BookDto::toDto).collect(Collectors.toList());
+        return bookRepository.findAll().stream()
+                .map(BookDto::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public BookDto getBookById(String id) {
-        return BookDto.toDto(bookRepository.findById(id).orElseThrow(() -> new DataNotFoundException(
-                String.format(ExceptionMessages.BOOK_NOT_FOUND, id))));
+        return BookDto.toDto(bookRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(String.format(ExceptionMessages.BOOK_NOT_FOUND, id))));
     }
 
     @Override
     @Transactional(readOnly = true)
     public BookWithCommentDto getBookWithCommentsByBookId(String id) {
-        BookDto bookDto = BookDto.toDto(bookRepository.findById(id).orElseThrow(() -> new DataNotFoundException(
-                String.format(ExceptionMessages.BOOK_NOT_FOUND, id))));
-        List<CommentDto> commentDtoList = commentRepository.findByBookId(id).stream().map(CommentDto::toDto).toList();
+        BookDto bookDto = BookDto.toDto(bookRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(String.format(ExceptionMessages.BOOK_NOT_FOUND, id))));
+        List<CommentDto> commentDtoList = commentRepository.findByBookId(id).stream()
+                .map(CommentDto::toDto)
+                .toList();
         return new BookWithCommentDto(bookDto, commentDtoList);
     }
 
     @Override
     @Transactional
     public BookDto saveBook(BookDto bookDto) {
-        if (bookDto.getId() != null) {
-            Book bookForUpdate = bookRepository.findById(bookDto.getId())
-                    .orElseThrow(() -> new DataNotFoundException(
-                            String.format(ExceptionMessages.BOOK_NOT_FOUND, bookDto.getId())));
-            Author author = authorRepository.findById(bookDto.getAuthorId())
-                    .orElseThrow(() -> new DataNotFoundException(
-                            String.format(ExceptionMessages.AUTHOR_NOT_FOUND, bookDto.getAuthorId())));
-            bookForUpdate.setAuthor(author);
-            Genre genre = genreRepository.findById(bookDto.getGenreId())
-                    .orElseThrow(() -> new DataNotFoundException(
-                            String.format(ExceptionMessages.GENRE_NOT_FOUND, bookDto.getGenreId())));
-            bookForUpdate.setGenre(genre);
-            bookForUpdate.setName(bookDto.getName());
-            return BookDto.toDto(bookRepository.save(bookForUpdate));
-        } else {
-            Author author = authorRepository.findById(bookDto.getAuthorId())
-                    .orElseThrow(() -> new DataNotFoundException(
-                            String.format(ExceptionMessages.AUTHOR_NOT_FOUND, bookDto.getAuthorId())));
-            Genre genre = genreRepository.findById(bookDto.getGenreId())
-                    .orElseThrow(() -> new DataNotFoundException(
-                            String.format(ExceptionMessages.GENRE_NOT_FOUND, bookDto.getGenreId())));
-            return BookDto.toDto(bookRepository.save(new Book(bookDto.getName(), author, genre)));
-        }
+        Author author = authorRepository.findById(bookDto.getAuthorId())
+                .orElseThrow(() -> new DataNotFoundException(
+                        String.format(ExceptionMessages.AUTHOR_NOT_FOUND, bookDto.getAuthorId())));
+        Genre genre = genreRepository.findById(bookDto.getGenreId())
+                .orElseThrow(() -> new DataNotFoundException(
+                        String.format(ExceptionMessages.GENRE_NOT_FOUND, bookDto.getGenreId())));
+        return BookDto.toDto(bookRepository.save(new Book(bookDto.getName(), author, genre)));
+    }
+
+    @Override
+    @Transactional
+    public BookDto updateBook(BookDto bookDto) {
+        Book bookForUpdate = bookRepository.findById(bookDto.getId())
+                .orElseThrow(() -> new DataNotFoundException(
+                        String.format(ExceptionMessages.BOOK_NOT_FOUND, bookDto.getId())));
+        Author author = authorRepository.findById(bookDto.getAuthorId())
+                .orElseThrow(() -> new DataNotFoundException(
+                        String.format(ExceptionMessages.AUTHOR_NOT_FOUND, bookDto.getAuthorId())));
+        bookForUpdate.setAuthor(author);
+        Genre genre = genreRepository.findById(bookDto.getGenreId())
+                .orElseThrow(() -> new DataNotFoundException(
+                        String.format(ExceptionMessages.GENRE_NOT_FOUND, bookDto.getGenreId())));
+        bookForUpdate.setGenre(genre);
+        bookForUpdate.setName(bookDto.getName());
+        return BookDto.toDto(bookRepository.save(bookForUpdate));
     }
 
     @Override

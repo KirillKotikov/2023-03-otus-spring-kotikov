@@ -19,6 +19,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,9 +82,13 @@ public class BookRestControllerTest {
     @DisplayName("редактировать книгу")
     void shouldEditPageReturnOk() throws Exception {
         given(bookService.saveBook(bookDtoWithId)).willReturn(bookDtoWithId);
-        mvc.perform(post("/api/book").contentType("application/json")
+//        String response =
+        mvc.perform(put("/api/book").contentType("application/json")
                         .content(mapper.writeValueAsString(bookDtoWithId)))
                 .andExpect(status().isOk());
+//                .andReturn().getResponse().getContentAsString();
+//        System.out.println("response = " + response);
+//        assertEquals(response, mapper.writeValueAsString(bookDtoWithId));
         // почему-то в ответе не приходит json :(
 //                .andExpect(content().json(mapper.writeValueAsString(bookDtoWithId)));
     }

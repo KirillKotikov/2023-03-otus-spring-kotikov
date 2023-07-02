@@ -98,7 +98,7 @@
             genreId: $genre.value
         }
         fetch("/api/book", {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -108,7 +108,7 @@
                     console.log('Error: ' + e.message);
                     alert('Ошибка при обновлении книги!');
                 })
-        alert('Книга успешно сохранена!');
+        alert('Книга успешно обновлена!');
     }
 </script>
 </body>
