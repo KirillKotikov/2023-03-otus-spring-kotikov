@@ -11,11 +11,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.kotikov.library.dtos.BookDto;
 import ru.kotikov.library.dtos.BookWithCommentDto;
 import ru.kotikov.library.services.BookService;
-import ru.kotikov.library.services.CommentService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,9 +36,6 @@ public class BookRestControllerTest {
 
     @MockBean
     private BookService bookService;
-
-    @MockBean
-    private CommentService commentService;
 
     private final BookDto bookDtoWithId =
             new BookDto("1", "Name", "1", "Aladdin Author", "2", "Adventure");
@@ -70,34 +67,18 @@ public class BookRestControllerTest {
     @Test
     @DisplayName("сохранять книгу")
     void shouldAddReturnOk() throws Exception {
-        given(bookService.saveBook(bookDto)).willReturn(bookDtoWithId);
+        given(bookService.saveBook(any(BookDto.class))).willReturn(bookDtoWithId);
         mvc.perform(post("/api/book").contentType("application/json")
                         .content(mapper.writeValueAsString(bookDto)))
                 .andExpect(status().isOk());
-        // почему-то в ответе не приходит json :(
-//                .andExpect(content().json(mapper.writeValueAsString(bookDtoWithId)));
     }
 
     @Test
     @DisplayName("редактировать книгу")
     void shouldEditPageReturnOk() throws Exception {
         given(bookService.saveBook(bookDtoWithId)).willReturn(bookDtoWithId);
-//        String response =
         mvc.perform(put("/api/book").contentType("application/json")
                         .content(mapper.writeValueAsString(bookDtoWithId)))
                 .andExpect(status().isOk());
-//                .andReturn().getResponse().getContentAsString();
-//        System.out.println("response = " + response);
-//        assertEquals(response, mapper.writeValueAsString(bookDtoWithId));
-        // почему-то в ответе не приходит json :(
-//                .andExpect(content().json(mapper.writeValueAsString(bookDtoWithId)));
     }
-
-    // у меня почему то возвращается ответ 404
-//    @Test
-//    @DisplayName("удалять книгу")
-//    void shouldDeleteBookReturnRedirect() throws Exception {
-//        mvc.perform(post("/api/book/delete/1"))
-//                .andExpect(status().isOk());
-//    }
 }
