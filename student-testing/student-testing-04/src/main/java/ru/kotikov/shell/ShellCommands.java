@@ -32,7 +32,7 @@ public class ShellCommands {
     }
 
     private Availability isStartAvailable() {
-        return student == null? Availability.unavailable("Сначала ведите Имя и Фамилию через тире (например: " +
-                "\"fl Кирилл-Котиков\")!"): Availability.available();
+        return student == null ? Availability.unavailable("Сначала ведите Имя и Фамилию через тире (например: " +
+                                                          "\"fl Кирилл-Котиков\")!") : Availability.available();
     }
 }
