@@ -28,6 +28,7 @@
         <module>library-05</module>
         <module>library-06</module>
         <module>library-07</module>
+        <module>library-08</module>
     </modules>
 
     <dependencies>

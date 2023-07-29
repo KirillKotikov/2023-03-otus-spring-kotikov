@@ -5,3 +5,4 @@
 * library-05: Web-приложение полностью на стеке Spring
 * library-06: приложение с использованием AJAX и REST-контроллеров
 * library-07: приложение с использованием WebFlux
+* library-08: приложение с использованием Spring Security
