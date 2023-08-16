@@ -26,5 +26,6 @@
     <modules>
         <module>student-testing</module>
         <module>library</module>
+        <module>util</module>
     </modules>
 </project>
