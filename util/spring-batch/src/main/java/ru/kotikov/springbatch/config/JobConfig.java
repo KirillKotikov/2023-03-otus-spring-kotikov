@@ -255,7 +255,7 @@ public class JobConfig {
                     }
 
                     public void onReadError(@NonNull Exception e) {
-                        logger.info("Ошибка чтения комментариев");
+                        logger.info("Ошибка чтения комментариев", e);
                     }
                 })
                 .listener(new ItemWriteListener<CommentMongo>() {
