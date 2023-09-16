@@ -21,9 +21,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>metric</module>
         <module>spring-batch</module>
         <module>spring-integrations</module>
+        <module>metric</module>
         <module>resilent4j</module>
     </modules>
 
