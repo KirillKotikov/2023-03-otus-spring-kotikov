@@ -1,0 +1,36 @@
+version: '3.5'
+
+services:
+  library:
+    ports:
+      - "8080:8080"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: library-image:1.0
+    restart: always
+    container_name: library
+    environment:
+      - LOG_GROUP=ru.kotikov.docker
+      - LOG_LEVEL=INFO
+      - LOG_FILE_NAME=library
+      - LOG_TOTAL_SIZE_CAP=1GB
+      - LOG_MAX_FILE_SIZE=10MB
+      - LOG_MAX_HISTORY=90
+
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    volumes:
+      - ./logs:/var/log
+      - ./data:/service
+
+  postgres:
+    image: "postgres:13"
+    ports:
+      - "5432:5432"
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db
