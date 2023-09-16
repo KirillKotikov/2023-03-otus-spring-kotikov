@@ -1,0 +1,30 @@
+spring:
+  data:
+    mongodb:
+      port: 0
+      database: otus
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.kotikov.library.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
+resilience4j:
+  timelimiter:
+    instances:
+      getAll:
+        timeout-duration: 1s
+        cancel-running-future: true
+      getById:
+        timeout-duration: 1s
+        cancel-running-future: true
