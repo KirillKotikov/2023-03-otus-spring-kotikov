@@ -2,7 +2,7 @@ spring:
   application:
     name: library
   profiles:
-    active: prod
+    active: ${PROFILE}
   datasource:
     driverClassName: org.postgresql.Driver
   jpa:

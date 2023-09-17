@@ -7,6 +7,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      - postgres
     image: library-image:1.0
     restart: always
     container_name: library
@@ -18,12 +20,13 @@ services:
       - LOG_MAX_FILE_SIZE=10MB
       - LOG_MAX_HISTORY=90
 
+      - PROFILE=prod
+
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
     volumes:
       - ./logs:/var/log
-      - ./data:/service
 
   postgres:
     image: "postgres:13"
