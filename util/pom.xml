@@ -21,10 +21,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>metric</module>
         <module>spring-batch</module>
         <module>spring-integrations</module>
-<!--        <module>resilent4j</module>-->
+        <module>metric</module>
+        <module>resilent4j</module>
         <module>docker-library</module>
     </modules>
 
