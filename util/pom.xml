@@ -25,6 +25,7 @@
         <module>spring-integrations</module>
         <module>metric</module>
         <module>resilent4j</module>
+        <module>docker-library</module>
     </modules>
 
     <dependencies>

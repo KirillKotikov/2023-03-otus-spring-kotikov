@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: library
+  profiles:
+    active: ${PROFILE}
+  datasource:
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
