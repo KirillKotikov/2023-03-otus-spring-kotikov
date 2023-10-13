@@ -27,5 +27,6 @@
         <module>student-testing</module>
         <module>library</module>
         <module>util</module>
+        <module>blog-web-service</module>
     </modules>
 </project>
