@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Блог</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .postList {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .postList tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .postList td:last-child, td:first-child {
+            width: 50px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+
+<a href="/logout">Выйти из аккаунта</a>
+<a href="/login">Войти в аккаунт</a>
+<a href="/user/registration">Регистрация</a>
+<a href="/user/all">Посмотреть список всех пользователей</a>
+
+<div>
+    <h3>Список постов:</h3>
+
+    <table class="postList">
+        <thead>
+        <tr>
+            <th>Заголовок</th>
+            <th>Текст</th>
+            <th>Автор</th>
+            <th>Комментарии</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    allPostList();
+
+    function allPostList() {
+        $.get('/api/v1/post').done(function (postDtoList) {
+            $('tbody').remove()
+            $('table').append('<tbody>')
+            postDtoList.forEach(function (postDto) {
+                $('tbody').append(`
+                    <tr>
+                        <td>${postDto.header}</td>
+                        <td>${postDto.text}</td>
+                        <td>${postDto.userNickName}</td>
+                        <td>${postDto.userNickName}</td>
+                    </tr>
+                `)
+            });
+        })
+    }
+</script>
+</body>
+</html>
